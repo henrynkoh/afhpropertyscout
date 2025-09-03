@@ -1,0 +1,93 @@
+# AFH Property Scout Configuration
+
+# Target Counties and Areas
+target_counties:
+  - "Lewis County"
+  - "Thurston County" 
+  - "Pierce County"
+  - "King County"
+
+# Property Criteria
+property_criteria:
+  property_type: "1st floor rambler"
+  min_bedrooms: 3
+  min_bathrooms: 2
+  min_sqft: 2000
+  max_price: 1500000  # Maximum purchase price to consider
+  min_price: 300000   # Minimum purchase price to consider
+
+# Search Sources
+search_sources:
+  real_estate:
+    - "nwmls"
+    - "zillow"
+    - "redfin"
+    - "realtor"
+  social_media:
+    - "facebook"
+    - "twitter"
+    - "craigslist"
+  afh_specific:
+    - "afh_council"
+    - "facebook_groups"
+    - "community_forums"
+
+# AFH Financial Analysis Parameters
+afh_analysis:
+  # Revenue assumptions
+  medicaid_rate_per_day: 120
+  private_pay_rate_per_day: 200
+  occupancy_rate: 0.85
+  
+  # Operating costs (monthly)
+  utilities: 800
+  insurance: 400
+  maintenance: 600
+  supplies: 500
+  licensing_fees: 200
+  
+  # Target metrics
+  min_cash_flow: 3000  # Minimum monthly cash flow
+  min_cap_rate: 0.08   # Minimum cap rate
+  max_debt_ratio: 0.75 # Maximum debt-to-income ratio
+
+# Notification Settings
+notifications:
+  email:
+    enabled: true
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    sender_email: ""  # Set in .env
+    sender_password: ""  # Set in .env
+    recipient_emails:
+      - ""  # Set in .env
+  
+  sms:
+    enabled: true
+    twilio_account_sid: ""  # Set in .env
+    twilio_auth_token: ""   # Set in .env
+    twilio_phone_number: "" # Set in .env
+    recipient_phone: ""     # Set in .env
+
+# Search Schedule
+schedule:
+  daily_search_time: "08:00"  # 8 AM daily
+  search_frequency_hours: 24
+  notification_check_minutes: 30
+
+# Database Settings
+database:
+  type: "sqlite"
+  path: "data/afh_properties.db"
+  
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/afh_scout.log"
+  max_size_mb: 10
+  backup_count: 5
+
+# Rate Limiting
+rate_limiting:
+  requests_per_minute: 30
+  delay_between_requests: 2  # seconds
