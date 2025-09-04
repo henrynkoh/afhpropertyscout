@@ -937,60 +937,83 @@ class AFHPropertyScout {
 
     loadResourcesData() {
         console.log('Loading resources data...');
-        this.displayResources();
+        this.currentResourceCategory = 'official'; // Default category
+        this.selectResourceCategory('official');
     }
 
-    displayResources() {
-        const resourcesContainer = document.getElementById('resources-container');
-        if (!resourcesContainer) return;
+    selectResourceCategory(category) {
+        this.currentResourceCategory = category;
+        
+        // Update active button styling
+        document.querySelectorAll('.resource-category-btn').forEach(btn => {
+            btn.classList.remove('bg-blue-100', 'border-blue-300');
+            btn.classList.add('border-transparent');
+        });
+        
+        const activeBtn = document.querySelector(`[data-category="${category}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add('bg-blue-100', 'border-blue-300');
+            activeBtn.classList.remove('border-transparent');
+        }
+        
+        // Display resources for selected category
+        this.displayCategoryResources(category);
+    }
 
-        // Group resources by category
-        const groupedResources = this.groupResourcesByCategory();
+    displayCategoryResources(category) {
+        const contentContainer = document.getElementById('resources-content');
+        if (!contentContainer) return;
+
+        const categoryResources = this.afhResources.filter(resource => resource.category === category);
+        const categoryName = this.getCategoryDisplayName(category);
+        const categoryIcon = this.getCategoryIcon(category);
         
-        let html = '';
-        
-        // Create category sections
-        Object.keys(groupedResources).forEach(category => {
-            const categoryName = this.getCategoryDisplayName(category);
-            const categoryIcon = this.getCategoryIcon(category);
-            
-            html += `
-                <div class="mb-8">
-                    <div class="flex items-center mb-4">
-                        <i class="${categoryIcon} text-2xl mr-3 text-afh-blue"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">${categoryName}</h3>
+        let html = `
+            <div class="mb-6">
+                <div class="flex items-center mb-4">
+                    <i class="${categoryIcon} text-3xl mr-4 text-afh-blue"></i>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">${categoryName}</h2>
+                        <p class="text-gray-600">${categoryResources.length} resources available</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            `;
+                </div>
+            </div>
             
-            groupedResources[category].forEach(resource => {
-                html += `
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 p-4">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex items-center">
-                                <i class="${resource.icon} text-lg mr-2 text-afh-blue"></i>
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">${resource.name}</h4>
-                                    <p class="text-sm text-gray-600">${resource.type}</p>
-                                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        `;
+        
+        categoryResources.forEach(resource => {
+            html += `
+                <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-gray-200 p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center mr-4">
+                                <i class="${resource.icon} text-xl text-afh-blue"></i>
                             </div>
                         </div>
-                        <p class="text-sm text-gray-700 mb-4">${resource.description}</p>
-                        <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
-                           class="inline-flex items-center text-afh-blue hover:text-afh-green font-medium text-sm">
-                            Visit Resource <i class="fas fa-external-link-alt ml-1"></i>
-                        </a>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${resource.name}</h3>
+                            <p class="text-sm text-gray-600 mb-3">${resource.type}</p>
+                            <p class="text-sm text-gray-700 leading-relaxed">${resource.description}</p>
+                        </div>
                     </div>
-                `;
-            });
-            
-            html += `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center text-xs text-gray-500">
+                            <i class="fas fa-external-link-alt mr-1"></i>
+                            <span>External Link</span>
+                        </div>
+                        <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center px-4 py-2 bg-afh-blue text-white rounded-lg hover:bg-afh-green transition-colors font-medium text-sm">
+                            Visit Resource <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
                     </div>
                 </div>
             `;
         });
         
-        resourcesContainer.innerHTML = html;
+        html += `</div>`;
+        
+        contentContainer.innerHTML = html;
     }
 
     groupResourcesByCategory() {

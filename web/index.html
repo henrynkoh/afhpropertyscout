@@ -807,14 +807,123 @@
         </div>
 
         <!-- AFH Resources Section -->
-        <div x-show="activeSection === 'resources'" class="p-6">
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">AFH Resources & Links</h2>
-                <p class="text-gray-600">Comprehensive collection of AFH resources, communities, and essential links for successful AFH operations</p>
+        <div x-show="activeSection === 'resources'" class="flex h-full">
+            <!-- Resources Navigation Sidebar -->
+            <div class="w-80 bg-gray-50 border-r border-gray-200 overflow-y-auto">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">AFH Resources & Links</h2>
+                    <p class="text-sm text-gray-600 mb-6">Comprehensive collection of AFH resources, communities, and essential links for successful AFH operations</p>
+                    
+                    <!-- Category Navigation -->
+                    <div class="space-y-2">
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Categories</div>
+                        
+                        <button onclick="afhApp.selectResourceCategory('official')" 
+                                class="resource-category-btn w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
+                                data-category="official">
+                            <div class="flex items-center">
+                                <i class="fas fa-landmark text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="font-medium text-gray-800">Official Government</div>
+                                    <div class="text-xs text-gray-500">3 resources</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="afhApp.selectResourceCategory('county')" 
+                                class="resource-category-btn w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
+                                data-category="county">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="font-medium text-gray-800">County & City Offices</div>
+                                    <div class="text-xs text-gray-500">4 resources</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="afhApp.selectResourceCategory('facebook')" 
+                                class="resource-category-btn w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
+                                data-category="facebook">
+                            <div class="flex items-center">
+                                <i class="fab fa-facebook text-blue-500 mr-3"></i>
+                                <div>
+                                    <div class="font-medium text-gray-800">Facebook Communities</div>
+                                    <div class="text-xs text-gray-500">4 resources</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="afhApp.selectResourceCategory('network')" 
+                                class="resource-category-btn w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
+                                data-category="network">
+                            <div class="flex items-center">
+                                <i class="fas fa-users text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="font-medium text-gray-800">Professional Networks</div>
+                                    <div class="text-xs text-gray-500">2 resources</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="afhApp.selectResourceCategory('property')" 
+                                class="resource-category-btn w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
+                                data-category="property">
+                            <div class="flex items-center">
+                                <i class="fas fa-home text-orange-600 mr-3"></i>
+                                <div>
+                                    <div class="font-medium text-gray-800">Property Search</div>
+                                    <div class="text-xs text-gray-500">3 resources</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="afhApp.selectResourceCategory('training')" 
+                                class="resource-category-btn w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
+                                data-category="training">
+                            <div class="flex items-center">
+                                <i class="fas fa-graduation-cap text-indigo-600 mr-3"></i>
+                                <div>
+                                    <div class="font-medium text-gray-800">Training & Education</div>
+                                    <div class="text-xs text-gray-500">2 resources</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="afhApp.selectResourceCategory('financial')" 
+                                class="resource-category-btn w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
+                                data-category="financial">
+                            <div class="flex items-center">
+                                <i class="fas fa-dollar-sign text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="font-medium text-gray-800">Financial Services</div>
+                                    <div class="text-xs text-gray-500">2 resources</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="afhApp.selectResourceCategory('technology')" 
+                                class="resource-category-btn w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
+                                data-category="technology">
+                            <div class="flex items-center">
+                                <i class="fas fa-laptop text-gray-600 mr-3"></i>
+                                <div>
+                                    <div class="font-medium text-gray-800">Technology Tools</div>
+                                    <div class="text-xs text-gray-500">2 resources</div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
             </div>
             
-            <div id="resources-container">
-                <!-- Resources will be dynamically loaded here -->
+            <!-- Main Content Area -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-6">
+                    <div id="resources-content">
+                        <!-- Content will be dynamically loaded here -->
+                    </div>
+                </div>
             </div>
         </div>
 
