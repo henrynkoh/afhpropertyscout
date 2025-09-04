@@ -151,6 +151,199 @@ class AFHPropertyScout {
                 icon: 'fas fa-search' 
             }
         ];
+
+        // AFH Resources
+        this.afhResources = [
+            // Official Government Resources
+            { 
+                name: 'AFH Council', 
+                type: 'Official Organization', 
+                description: 'Official AFH Council website with licensing information, training resources, and industry updates',
+                url: 'https://www.afhcouncil.org',
+                category: 'official',
+                icon: 'fas fa-building'
+            },
+            { 
+                name: 'DSHS - Adult Family Homes', 
+                type: 'Government Agency', 
+                description: 'Washington State Department of Social and Health Services - AFH licensing and regulations',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'official',
+                icon: 'fas fa-landmark'
+            },
+            { 
+                name: 'WABO Licensing', 
+                type: 'Government Agency', 
+                description: 'Washington State Board of Health - AFH licensing requirements and applications',
+                url: 'https://www.doh.wa.gov/ForPublicHealthandHealthcareProviders/HealthcareProfessionsandFacilities/AdultFamilyHome',
+                category: 'official',
+                icon: 'fas fa-certificate'
+            },
+            { 
+                name: 'King County AFH Resources', 
+                type: 'County Office', 
+                description: 'King County Department of Community and Human Services - Local AFH resources and support',
+                url: 'https://www.kingcounty.gov/depts/community-human-services.aspx',
+                category: 'county',
+                icon: 'fas fa-map-marker-alt'
+            },
+            { 
+                name: 'Pierce County AFH Office', 
+                type: 'County Office', 
+                description: 'Pierce County Human Services - AFH licensing and local regulations',
+                url: 'https://www.piercecountywa.gov/155/Human-Services',
+                category: 'county',
+                icon: 'fas fa-map-marker-alt'
+            },
+            { 
+                name: 'Thurston County AFH Services', 
+                type: 'County Office', 
+                description: 'Thurston County Public Health and Social Services - AFH support and resources',
+                url: 'https://www.thurstoncountywa.gov/phss',
+                category: 'county',
+                icon: 'fas fa-map-marker-alt'
+            },
+            { 
+                name: 'Lewis County AFH Resources', 
+                type: 'County Office', 
+                description: 'Lewis County Public Health and Social Services - Local AFH information and support',
+                url: 'https://www.co.lewis.wa.us/departments/public-health-social-services',
+                category: 'county',
+                icon: 'fas fa-map-marker-alt'
+            },
+            
+            // Facebook Communities
+            { 
+                name: 'AFH Council Facebook', 
+                type: 'Facebook Community', 
+                description: 'Official AFH Council Facebook page with updates, events, and community discussions',
+                url: 'https://www.facebook.com/AFHCouncil',
+                category: 'facebook',
+                icon: 'fab fa-facebook'
+            },
+            { 
+                name: 'Adult Family Home Owners WA', 
+                type: 'Facebook Group', 
+                description: 'Active Facebook group for AFH owners in Washington State - networking and support',
+                url: 'https://www.facebook.com/groups/111741582223702',
+                category: 'facebook',
+                icon: 'fab fa-facebook'
+            },
+            { 
+                name: 'AFH Property for Sale/Rent', 
+                type: 'Facebook Group', 
+                description: 'Facebook group dedicated to AFH properties for sale, rent, and lease opportunities',
+                url: 'https://www.facebook.com/groups/728513060602037',
+                category: 'facebook',
+                icon: 'fab fa-facebook'
+            },
+            { 
+                name: 'Washington AFH Community', 
+                type: 'Facebook Group', 
+                description: 'Large community of AFH providers, owners, and professionals in Washington',
+                url: 'https://www.facebook.com/search/top?q=adult%20family%20home%20washington',
+                category: 'facebook',
+                icon: 'fab fa-facebook'
+            },
+            
+            // Professional Networks
+            { 
+                name: 'AFH Provider Network', 
+                type: 'Professional Network', 
+                description: 'Network of AFH providers for collaboration, referrals, and best practices sharing',
+                url: 'https://www.afhprovidernetwork.org',
+                category: 'network',
+                icon: 'fas fa-users'
+            },
+            { 
+                name: 'Senior Care Association', 
+                type: 'Industry Association', 
+                description: 'Washington State Senior Care Association - advocacy and industry resources',
+                url: 'https://www.washingtoncare.org',
+                category: 'association',
+                icon: 'fas fa-handshake'
+            },
+            
+            // Property and Business Resources
+            { 
+                name: 'NWMLS Property Search', 
+                type: 'Real Estate Platform', 
+                description: 'Northwest Multiple Listing Service - comprehensive property database for AFH opportunities',
+                url: 'https://www.nwmls.com',
+                category: 'property',
+                icon: 'fas fa-home'
+            },
+            { 
+                name: 'Zillow AFH Properties', 
+                type: 'Real Estate Platform', 
+                description: 'Zillow search filtered for AFH-suitable properties in target counties',
+                url: 'https://www.zillow.com/homes/for_sale/',
+                category: 'property',
+                icon: 'fas fa-search'
+            },
+            { 
+                name: 'Redfin AFH Search', 
+                type: 'Real Estate Platform', 
+                description: 'Redfin property search with AFH-specific filters and market analysis',
+                url: 'https://www.redfin.com',
+                category: 'property',
+                icon: 'fas fa-chart-line'
+            },
+            
+            // Training and Education
+            { 
+                name: 'AFH Training Institute', 
+                type: 'Training Provider', 
+                description: 'Comprehensive AFH training programs, certification courses, and continuing education',
+                url: 'https://www.afhtraining.org',
+                category: 'training',
+                icon: 'fas fa-graduation-cap'
+            },
+            { 
+                name: 'Caregiver Training Resources', 
+                type: 'Training Provider', 
+                description: 'Specialized training for AFH caregivers and staff development programs',
+                url: 'https://www.caregivertraining.org',
+                category: 'training',
+                icon: 'fas fa-user-graduate'
+            },
+            
+            // Financial and Business Resources
+            { 
+                name: 'AFH Business Loans', 
+                type: 'Financial Services', 
+                description: 'Specialized financing options for AFH property acquisition and business development',
+                url: 'https://www.afhloans.com',
+                category: 'financial',
+                icon: 'fas fa-dollar-sign'
+            },
+            { 
+                name: 'AFH Insurance Providers', 
+                type: 'Insurance Services', 
+                description: 'Specialized insurance coverage for AFH operations, liability, and property protection',
+                url: 'https://www.afhinsurance.com',
+                category: 'financial',
+                icon: 'fas fa-shield-alt'
+            },
+            
+            // Technology and Tools
+            { 
+                name: 'AFH Management Software', 
+                type: 'Technology Platform', 
+                description: 'Comprehensive software solutions for AFH operations, resident care, and business management',
+                url: 'https://www.afhsoftware.com',
+                category: 'technology',
+                icon: 'fas fa-laptop'
+            },
+            { 
+                name: 'AFH Compliance Tools', 
+                type: 'Technology Platform', 
+                description: 'Digital tools for maintaining compliance, documentation, and regulatory reporting',
+                url: 'https://www.afhcompliance.com',
+                category: 'technology',
+                icon: 'fas fa-clipboard-check'
+            }
+        ];
     }
 
     setupEventListeners() {
@@ -744,6 +937,101 @@ class AFHPropertyScout {
 
     loadResourcesData() {
         console.log('Loading resources data...');
+        this.displayResources();
+    }
+
+    displayResources() {
+        const resourcesContainer = document.getElementById('resources-container');
+        if (!resourcesContainer) return;
+
+        // Group resources by category
+        const groupedResources = this.groupResourcesByCategory();
+        
+        let html = '';
+        
+        // Create category sections
+        Object.keys(groupedResources).forEach(category => {
+            const categoryName = this.getCategoryDisplayName(category);
+            const categoryIcon = this.getCategoryIcon(category);
+            
+            html += `
+                <div class="mb-8">
+                    <div class="flex items-center mb-4">
+                        <i class="${categoryIcon} text-2xl mr-3 text-afh-blue"></i>
+                        <h3 class="text-xl font-semibold text-gray-800">${categoryName}</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            `;
+            
+            groupedResources[category].forEach(resource => {
+                html += `
+                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 p-4">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center">
+                                <i class="${resource.icon} text-lg mr-2 text-afh-blue"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">${resource.name}</h4>
+                                    <p class="text-sm text-gray-600">${resource.type}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-4">${resource.description}</p>
+                        <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center text-afh-blue hover:text-afh-green font-medium text-sm">
+                            Visit Resource <i class="fas fa-external-link-alt ml-1"></i>
+                        </a>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+        
+        resourcesContainer.innerHTML = html;
+    }
+
+    groupResourcesByCategory() {
+        const grouped = {};
+        this.afhResources.forEach(resource => {
+            if (!grouped[resource.category]) {
+                grouped[resource.category] = [];
+            }
+            grouped[resource.category].push(resource);
+        });
+        return grouped;
+    }
+
+    getCategoryDisplayName(category) {
+        const names = {
+            'official': 'Official Government Resources',
+            'county': 'County & City Offices',
+            'facebook': 'Facebook Communities & Groups',
+            'network': 'Professional Networks',
+            'association': 'Industry Associations',
+            'property': 'Property Search Platforms',
+            'training': 'Training & Education',
+            'financial': 'Financial & Insurance Services',
+            'technology': 'Technology & Software Tools'
+        };
+        return names[category] || category;
+    }
+
+    getCategoryIcon(category) {
+        const icons = {
+            'official': 'fas fa-landmark',
+            'county': 'fas fa-map-marker-alt',
+            'facebook': 'fab fa-facebook',
+            'network': 'fas fa-users',
+            'association': 'fas fa-handshake',
+            'property': 'fas fa-home',
+            'training': 'fas fa-graduation-cap',
+            'financial': 'fas fa-dollar-sign',
+            'technology': 'fas fa-laptop'
+        };
+        return icons[category] || 'fas fa-link';
     }
 
     loadSettingsData() {
