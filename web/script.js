@@ -156,6 +156,30 @@ class AFHPropertyScout {
         this.afhResources = [
             // Official Government Resources
             { 
+                name: 'DSHS AFH Information for Prospective Providers', 
+                type: 'Official Guide', 
+                description: 'Complete official guide for prospective AFH providers including training requirements, capacity limits (up to 6-8 beds), and regulatory foundation',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'official',
+                icon: 'fas fa-landmark'
+            },
+            { 
+                name: 'WAC 388-76: AFH Minimum Licensing Requirements', 
+                type: 'Regulatory Text', 
+                description: 'Official Washington Administrative Code for AFH minimum licensing requirements and standards',
+                url: 'https://apps.leg.wa.gov/wac/default.aspx?cite=388-76',
+                category: 'official',
+                icon: 'fas fa-gavel'
+            },
+            { 
+                name: 'RCW 70.128: Adult Family Homes', 
+                type: 'Statutory Foundation', 
+                description: 'Revised Code of Washington statutory foundation for Adult Family Homes operations and regulations',
+                url: 'https://apps.leg.wa.gov/rcw/default.aspx?cite=70.128',
+                category: 'official',
+                icon: 'fas fa-book'
+            },
+            { 
                 name: 'AFH Council', 
                 type: 'Official Organization', 
                 description: 'Official AFH Council website with licensing information, training resources, and industry updates',
@@ -172,6 +196,30 @@ class AFHPropertyScout {
                 icon: 'fas fa-landmark'
             },
             { 
+                name: 'WABO AFH Building Inspection Checklist (Apr 2024)', 
+                type: 'Inspection Guide', 
+                description: 'Official WABO AFH Building Inspection Checklist with 2021 IRC R330 compliance requirements and step-by-step guides',
+                url: 'https://www.doh.wa.gov/ForPublicHealthandHealthcareProviders/HealthcareProfessionsandFacilities/AdultFamilyHome',
+                category: 'inspection',
+                icon: 'fas fa-clipboard-check'
+            },
+            { 
+                name: 'DSHS AFH Initial Inspection Preparation Checklist', 
+                type: 'Preparation Guide', 
+                description: 'Comprehensive checklist for preparing your property for initial DSHS AFH inspection and compliance verification',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'inspection',
+                icon: 'fas fa-list-check'
+            },
+            { 
+                name: 'DSHS AFH Building Inspections Hub', 
+                type: 'Inspection Portal', 
+                description: 'Central hub for all AFH building inspection resources, collaboration updates, and compliance tracking',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'inspection',
+                icon: 'fas fa-building'
+            },
+            { 
                 name: 'WABO Licensing', 
                 type: 'Government Agency', 
                 description: 'Washington State Board of Health - AFH licensing requirements and applications',
@@ -180,36 +228,100 @@ class AFHPropertyScout {
                 icon: 'fas fa-certificate'
             },
             { 
-                name: 'King County AFH Resources', 
-                type: 'County Office', 
-                description: 'King County Department of Community and Human Services - Local AFH resources and support',
-                url: 'https://www.kingcounty.gov/depts/community-human-services.aspx',
+                name: 'King County Parcel Viewer', 
+                type: 'Parcel Portal', 
+                description: 'King County Parcel Viewer - comprehensive property information, ownership, and zoning details',
+                url: 'https://gismaps.kingcounty.gov/parcelviewer2/',
                 category: 'county',
                 icon: 'fas fa-map-marker-alt'
             },
             { 
-                name: 'Pierce County AFH Office', 
-                type: 'County Office', 
-                description: 'Pierce County Human Services - AFH licensing and local regulations',
+                name: 'King County AFH Inspection Guide', 
+                type: 'Inspection Guide', 
+                description: 'King County specific AFH inspection requirements and building code compliance guidelines',
+                url: 'https://www.kingcounty.gov/depts/community-human-services.aspx',
+                category: 'county',
+                icon: 'fas fa-clipboard-check'
+            },
+            { 
+                name: 'King County MyBuildingPermit.com', 
+                type: 'Permit Portal', 
+                description: 'King County online permit application and tracking system for building permits and inspections',
+                url: 'https://www.mybuildingpermit.com/',
+                category: 'county',
+                icon: 'fas fa-building'
+            },
+            { 
+                name: 'Pierce County Parcel & Property Info', 
+                type: 'Parcel Portal', 
+                description: 'Pierce County parcel and property information system with ownership, zoning, and tax records',
                 url: 'https://www.piercecountywa.gov/155/Human-Services',
                 category: 'county',
                 icon: 'fas fa-map-marker-alt'
             },
             { 
-                name: 'Thurston County AFH Services', 
-                type: 'County Office', 
-                description: 'Thurston County Public Health and Social Services - AFH support and resources',
+                name: 'Pierce County PALS Online', 
+                type: 'Permit Portal', 
+                description: 'Pierce County Permit and Land Use System (PALS) for online permit applications and tracking',
+                url: 'https://www.piercecountywa.gov/155/Human-Services',
+                category: 'county',
+                icon: 'fas fa-building'
+            },
+            { 
+                name: 'Pierce County PublicGIS Permit Layers', 
+                type: 'GIS Portal', 
+                description: 'Pierce County PublicGIS system with permit layers, zoning maps, and property information',
+                url: 'https://www.piercecountywa.gov/155/Human-Services',
+                category: 'county',
+                icon: 'fas fa-map'
+            },
+            { 
+                name: 'Thurston County Permit Applications', 
+                type: 'Permit Portal', 
+                description: 'Thurston County online permit application system for building permits and land use approvals',
                 url: 'https://www.thurstoncountywa.gov/phss',
                 category: 'county',
                 icon: 'fas fa-map-marker-alt'
             },
             { 
-                name: 'Lewis County AFH Resources', 
-                type: 'County Office', 
-                description: 'Lewis County Public Health and Social Services - Local AFH information and support',
+                name: 'Thurston County WABO AFH Form SA007', 
+                type: 'AFH Form', 
+                description: 'Thurston County specific WABO AFH Form SA007 for building inspection and compliance documentation',
+                url: 'https://www.thurstoncountywa.gov/phss',
+                category: 'county',
+                icon: 'fas fa-file-alt'
+            },
+            { 
+                name: 'Thurston County Water/Sewer Prerequisites', 
+                type: 'Utility Requirements', 
+                description: 'Thurston County water and sewer system requirements and capacity verification for AFH operations',
+                url: 'https://www.thurstoncountywa.gov/phss',
+                category: 'county',
+                icon: 'fas fa-tint'
+            },
+            { 
+                name: 'Lewis County Parcel Search', 
+                type: 'Parcel Portal', 
+                description: 'Lewis County parcel search system with property information, ownership, and tax records',
                 url: 'https://www.co.lewis.wa.us/departments/public-health-social-services',
                 category: 'county',
                 icon: 'fas fa-map-marker-alt'
+            },
+            { 
+                name: 'Lewis County Permit Applications', 
+                type: 'Permit Portal', 
+                description: 'Lewis County online permit application system for building permits and land use approvals',
+                url: 'https://www.co.lewis.wa.us/departments/public-health-social-services',
+                category: 'county',
+                icon: 'fas fa-building'
+            },
+            { 
+                name: 'Lewis County Tax Records & Ownership', 
+                type: 'Tax Portal', 
+                description: 'Lewis County tax records and property ownership information system',
+                url: 'https://www.co.lewis.wa.us/departments/public-health-social-services',
+                category: 'county',
+                icon: 'fas fa-file-invoice-dollar'
             },
             
             // Facebook Communities
@@ -256,6 +368,30 @@ class AFHPropertyScout {
                 icon: 'fas fa-users'
             },
             { 
+                name: 'Adult Family Home Council (AFHC)', 
+                type: 'Advocacy Group', 
+                description: 'Primary advocacy organization for AFH providers with industry support, networking, and policy representation',
+                url: 'https://www.afhcouncil.org',
+                category: 'advocacy',
+                icon: 'fas fa-star'
+            },
+            { 
+                name: 'AFHC Home Finder Directory', 
+                type: 'Industry Directory', 
+                description: 'Comprehensive directory of licensed AFH providers and available beds across Washington State',
+                url: 'https://www.afhcouncil.org',
+                category: 'advocacy',
+                icon: 'fas fa-search'
+            },
+            { 
+                name: 'DSHS AFH Locator & Overview', 
+                type: 'Search Tool', 
+                description: 'Official DSHS tool to search existing AFHs, check licensing status, and view provider information',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'advocacy',
+                icon: 'fas fa-map-marker-alt'
+            },
+            { 
                 name: 'Senior Care Association', 
                 type: 'Industry Association', 
                 description: 'Washington State Senior Care Association - advocacy and industry resources',
@@ -265,6 +401,30 @@ class AFHPropertyScout {
             },
             
             // Property and Business Resources
+            { 
+                name: 'NWMLS Data Use Compliance Policy (May 2024)', 
+                type: 'Compliance Policy', 
+                description: 'Official NWMLS data use compliance policy with licensing requirements and authorized access protocols',
+                url: 'https://www.nwmls.com',
+                category: 'compliance',
+                icon: 'fas fa-shield-alt'
+            },
+            { 
+                name: 'Redfin Terms of Use', 
+                type: 'Terms of Service', 
+                description: 'Redfin Terms of Use - prohibits scraping and requires authorized API access for data usage',
+                url: 'https://www.redfin.com/about/terms-of-use',
+                category: 'compliance',
+                icon: 'fas fa-exclamation-triangle'
+            },
+            { 
+                name: 'Zillow API Terms', 
+                type: 'API Terms', 
+                description: 'Zillow API Terms of Service - official API approval process and usage guidelines for property data',
+                url: 'https://www.zillow.com/howto/api/APIOverview.htm',
+                category: 'compliance',
+                icon: 'fas fa-code'
+            },
             { 
                 name: 'NWMLS Property Search', 
                 type: 'Real Estate Platform', 
@@ -292,6 +452,38 @@ class AFHPropertyScout {
             
             // Training and Education
             { 
+                name: 'Home Care Aide Certification', 
+                type: 'Training Requirement', 
+                description: 'Required 75-hour orientation, safety, and basic training program for AFH caregivers',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'training',
+                icon: 'fas fa-graduation-cap'
+            },
+            { 
+                name: 'AFH Administrator Training Class', 
+                type: 'Administrative Training', 
+                description: 'Comprehensive training program for AFH administrators covering operations, compliance, and management',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'training',
+                icon: 'fas fa-user-tie'
+            },
+            { 
+                name: 'CPR/First Aid Certification', 
+                type: 'Safety Training', 
+                description: 'Required CPR and First Aid certification for all AFH staff members',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'training',
+                icon: 'fas fa-heart'
+            },
+            { 
+                name: 'Food Safety Training', 
+                type: 'Safety Training', 
+                description: 'Required food safety training and certification for AFH kitchen operations',
+                url: 'https://www.dshs.wa.gov/altsa/home-and-community-services/adult-family-homes',
+                category: 'training',
+                icon: 'fas fa-utensils'
+            },
+            { 
                 name: 'AFH Training Institute', 
                 type: 'Training Provider', 
                 description: 'Comprehensive AFH training programs, certification courses, and continuing education',
@@ -318,6 +510,30 @@ class AFHPropertyScout {
                 icon: 'fas fa-dollar-sign'
             },
             { 
+                name: 'Commercial General Liability Insurance', 
+                type: 'Insurance Requirement', 
+                description: 'Required commercial general liability insurance with $500K per occurrence minimum coverage',
+                url: 'https://www.afhinsurance.com',
+                category: 'insurance',
+                icon: 'fas fa-shield-alt'
+            },
+            { 
+                name: 'Professional Liability/E&O Insurance', 
+                type: 'Insurance Requirement', 
+                description: 'Professional liability and errors & omissions insurance with $1M general aggregate minimum',
+                url: 'https://www.afhinsurance.com',
+                category: 'insurance',
+                icon: 'fas fa-user-shield'
+            },
+            { 
+                name: 'State/DSHS Additional Insured', 
+                type: 'Insurance Requirement', 
+                description: 'Required to name State/DSHS as additional insured on all liability policies',
+                url: 'https://www.afhinsurance.com',
+                category: 'insurance',
+                icon: 'fas fa-landmark'
+            },
+            { 
                 name: 'AFH Insurance Providers', 
                 type: 'Insurance Services', 
                 description: 'Specialized insurance coverage for AFH operations, liability, and property protection',
@@ -342,6 +558,40 @@ class AFHPropertyScout {
                 url: 'https://www.afhcompliance.com',
                 category: 'technology',
                 icon: 'fas fa-clipboard-check'
+            },
+            
+            // Legal and Compliance
+            { 
+                name: 'Civil Penalties (RCW 70.128.160)', 
+                type: 'Legal Compliance', 
+                description: 'Civil penalties for AFH violations, unlicensed operations, and stop placement orders under RCW 70.128.160',
+                url: 'https://apps.leg.wa.gov/rcw/default.aspx?cite=70.128.160',
+                category: 'legal',
+                icon: 'fas fa-gavel'
+            },
+            { 
+                name: 'Capacity & Evacuation Rules', 
+                type: 'Safety Requirements', 
+                description: 'Default capacity limits, requirements for 7-8 beds, evacuation standards, and ramp specifications',
+                url: 'https://apps.leg.wa.gov/wac/default.aspx?cite=388-76',
+                category: 'legal',
+                icon: 'fas fa-info-circle'
+            },
+            { 
+                name: 'WABO Building Inspection Requirements', 
+                type: 'Building Code', 
+                description: 'Complete WABO building inspection requirements including 32" door clear widths and smoke/CO alarms',
+                url: 'https://www.doh.wa.gov/ForPublicHealthandHealthcareProviders/HealthcareProfessionsandFacilities/AdultFamilyHome',
+                category: 'legal',
+                icon: 'fas fa-building'
+            },
+            { 
+                name: 'Hot Water Temperature Requirements', 
+                type: 'Safety Standard', 
+                description: 'Required hot water temperature limits (≤120°F) and safety compliance standards',
+                url: 'https://apps.leg.wa.gov/wac/default.aspx?cite=388-76',
+                category: 'legal',
+                icon: 'fas fa-thermometer-half'
             }
         ];
     }
@@ -1030,14 +1280,19 @@ class AFHPropertyScout {
     getCategoryDisplayName(category) {
         const names = {
             'official': 'Official Government Resources',
-            'county': 'County & City Offices',
+            'inspection': 'Inspections & Building Code',
+            'advocacy': 'Industry Advocacy & Locator',
+            'compliance': 'Data Access & Terms of Service',
+            'county': 'County Parcel & Permit Portals',
             'facebook': 'Facebook Communities & Groups',
             'network': 'Professional Networks',
             'association': 'Industry Associations',
             'property': 'Property Search Platforms',
             'training': 'Training & Education',
-            'financial': 'Financial & Insurance Services',
-            'technology': 'Technology & Software Tools'
+            'financial': 'Financial Services',
+            'insurance': 'Insurance Requirements',
+            'technology': 'Technology & Software Tools',
+            'legal': 'Legal & Compliance'
         };
         return names[category] || category;
     }
@@ -1045,6 +1300,9 @@ class AFHPropertyScout {
     getCategoryIcon(category) {
         const icons = {
             'official': 'fas fa-landmark',
+            'inspection': 'fas fa-clipboard-check',
+            'advocacy': 'fas fa-star',
+            'compliance': 'fas fa-shield-alt',
             'county': 'fas fa-map-marker-alt',
             'facebook': 'fab fa-facebook',
             'network': 'fas fa-users',
@@ -1052,7 +1310,9 @@ class AFHPropertyScout {
             'property': 'fas fa-home',
             'training': 'fas fa-graduation-cap',
             'financial': 'fas fa-dollar-sign',
-            'technology': 'fas fa-laptop'
+            'insurance': 'fas fa-shield-alt',
+            'technology': 'fas fa-laptop',
+            'legal': 'fas fa-gavel'
         };
         return icons[category] || 'fas fa-link';
     }
