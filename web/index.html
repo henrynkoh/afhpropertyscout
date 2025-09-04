@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFH Property Scout - Advanced Property Analysis & Automation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'afh-blue': '#1e40af',
+                        'afh-green': '#059669',
+                        'afh-orange': '#ea580c',
+                        'afh-purple': '#7c3aed'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50" x-data="afhApp()">
+    <!-- Navigation Sidebar -->
+    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out" 
+         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center h-16 bg-afh-blue text-white">
+            <i class="fas fa-home text-2xl mr-2"></i>
+            <span class="text-xl font-bold">AFH Property Scout</span>
+        </div>
+        
+        <nav class="mt-8">
+            <div class="px-4 space-y-2">
+                <a href="#dashboard" @click="activeSection = 'dashboard'" 
+                   :class="activeSection === 'dashboard' ? 'bg-afh-blue text-white' : 'text-gray-700 hover:bg-gray-100'"
+                   class="flex items-center px-4 py-3 rounded-lg transition-colors">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    Dashboard
+                </a>
+                
+                <a href="#analysis" @click="activeSection = 'analysis'" 
+                   :class="activeSection === 'analysis' ? 'bg-afh-blue text-white' : 'text-gray-700 hover:bg-gray-100'"
+                   class="flex items-center px-4 py-3 rounded-lg transition-colors">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    Property Analysis
+                </a>
+                
+                <a href="#showcase" @click="activeSection = 'showcase'" 
+                   :class="activeSection === 'showcase' ? 'bg-afh-blue text-white' : 'text-gray-700 hover:bg-gray-100'"
+                   class="flex items-center px-4 py-3 rounded-lg transition-colors">
+                    <i class="fas fa-star mr-3"></i>
+                    Property Showcase
+                </a>
+                
+                <a href="#series" @click="activeSection = 'series'" 
+                   :class="activeSection === 'series' ? 'bg-afh-blue text-white' : 'text-gray-700 hover:bg-gray-100'"
+                   class="flex items-center px-4 py-3 rounded-lg transition-colors">
+                    <i class="fas fa-list-ul mr-3"></i>
+                    Analysis Series
+                </a>
+                
+                <a href="#automation" @click="activeSection = 'automation'" 
+                   :class="activeSection === 'automation' ? 'bg-afh-blue text-white' : 'text-gray-700 hover:bg-gray-100'"
+                   class="flex items-center px-4 py-3 rounded-lg transition-colors">
+                    <i class="fas fa-robot mr-3"></i>
+                    Automation Status
+                </a>
+                
+                <a href="#resources" @click="activeSection = 'resources'" 
+                   :class="activeSection === 'resources' ? 'bg-afh-blue text-white' : 'text-gray-700 hover:bg-gray-100'"
+                   class="flex items-center px-4 py-3 rounded-lg transition-colors">
+                    <i class="fas fa-link mr-3"></i>
+                    AFH Resources
+                </a>
+                
+                <a href="#settings" @click="activeSection = 'settings'" 
+                   :class="activeSection === 'settings' ? 'bg-afh-blue text-white' : 'text-gray-700 hover:bg-gray-100'"
+                   class="flex items-center px-4 py-3 rounded-lg transition-colors">
+                    <i class="fas fa-cog mr-3"></i>
+                    Settings
+                </a>
+            </div>
+        </nav>
+        
+        <!-- Progress Summary -->
+        <div class="absolute bottom-4 left-4 right-4">
+            <div class="bg-gray-100 rounded-lg p-4">
+                <h4 class="text-sm font-semibold text-gray-700 mb-2">System Status</h4>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs">
+                        <span>Properties Analyzed</span>
+                        <span class="font-semibold">{{ totalProperties }}</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span>Success Rate</span>
+                        <span class="font-semibold text-afh-green">{{ successRate }}%</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span>Avg. ROI</span>
+                        <span class="font-semibold text-afh-green">{{ averageROI }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center">
+                    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden mr-4">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-gray-800" x-text="getSectionTitle()"></h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search properties..." 
+                               class="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                    
+                    <button class="bg-afh-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>New Analysis
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <div x-show="activeSection === 'dashboard'" class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Stats Cards -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-afh-blue bg-opacity-10">
+                            <i class="fas fa-home text-afh-blue text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Properties Found</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ totalProperties }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-afh-green bg-opacity-10">
+                            <i class="fas fa-chart-line text-afh-green text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Avg. Cash Flow</p>
+                            <p class="text-2xl font-bold text-gray-900">${{ averageCashFlow }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-afh-orange bg-opacity-10">
+                            <i class="fas fa-percentage text-afh-orange text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Success Rate</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ successRate }}%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-afh-purple bg-opacity-10">
+                            <i class="fas fa-dollar-sign text-afh-purple text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Total ROI</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ averageROI }}%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Tracking -->
+            <div class="bg-white rounded-lg shadow p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-4">Current Analysis Progress</h3>
+                <div class="space-y-4">
+                    <div v-for="step in analysisSteps" :key="step.id" class="flex items-center">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                             :class="step.completed ? 'bg-afh-green text-white' : step.active ? 'bg-afh-blue text-white' : 'bg-gray-200 text-gray-600'">
+                            <i :class="step.completed ? 'fas fa-check' : 'fas fa-spinner fa-spin'"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium" :class="step.active ? 'text-afh-blue' : 'text-gray-600'">
+                                    {{ step.name }}
+                                </span>
+                                <span class="text-sm text-gray-500">{{ step.progress }}%</span>
+                            </div>
+                            <div class="mt-1 bg-gray-200 rounded-full h-2">
+                                <div class="bg-afh-blue h-2 rounded-full transition-all duration-500"
+                                     :style="`width: ${step.progress}%`"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                <div class="space-y-3">
+                    <div v-for="activity in recentActivities" :key="activity.id" 
+                         class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center"
+                                 :class="activity.type === 'success' ? 'bg-afh-green text-white' : 'bg-afh-orange text-white'">
+                                <i :class="activity.icon"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium text-gray-900">{{ activity.message }}</p>
+                            <p class="text-xs text-gray-500">{{ activity.time }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Property Analysis Section -->
+        <div x-show="activeSection === 'analysis'" class="p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Analysis Form -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Property Analysis</h3>
+                        <form @submit.prevent="analyzeProperty()" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Property Address</label>
+                                <input type="text" x-model="analysisForm.address" 
+                                       class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent"
+                                       placeholder="Enter property address">
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                                    <input type="number" x-model="analysisForm.price" 
+                                           class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent"
+                                           placeholder="$">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Square Feet</label>
+                                    <input type="number" x-model="analysisForm.sqft" 
+                                           class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent"
+                                           placeholder="sqft">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Bedrooms</label>
+                                    <input type="number" x-model="analysisForm.bedrooms" 
+                                           class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Bathrooms</label>
+                                    <input type="number" x-model="analysisForm.bathrooms" 
+                                           class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">County</label>
+                                <select x-model="analysisForm.county" 
+                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent">
+                                    <option value="">Select County</option>
+                                    <option value="king">King County</option>
+                                    <option value="pierce">Pierce County</option>
+                                    <option value="thurston">Thurston County</option>
+                                    <option value="lewis">Lewis County</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" 
+                                    class="w-full bg-afh-blue text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-chart-line mr-2"></i>Analyze Property
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Analysis Results -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Analysis Results</h3>
+                        <div v-if="analysisResults" class="space-y-6">
+                            <!-- Financial Metrics -->
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-2xl font-bold text-afh-green">${{ analysisResults.monthlyCashFlow }}</p>
+                                    <p class="text-sm text-gray-600">Monthly Cash Flow</p>
+                                </div>
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-2xl font-bold text-afh-blue">{{ analysisResults.capRate }}%</p>
+                                    <p class="text-sm text-gray-600">Cap Rate</p>
+                                </div>
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-2xl font-bold text-afh-orange">{{ analysisResults.roi }}%</p>
+                                    <p class="text-sm text-gray-600">ROI</p>
+                                </div>
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-2xl font-bold" :class="analysisResults.viabilityScore > 80 ? 'text-afh-green' : 'text-afh-orange'">
+                                        {{ analysisResults.viabilityScore }}%
+                                    </p>
+                                    <p class="text-sm text-gray-600">Viability Score</p>
+                                </div>
+                            </div>
+                            
+                            <!-- WABO Status -->
+                            <div class="p-4 border rounded-lg">
+                                <h4 class="font-semibold mb-2">WABO Status</h4>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 rounded-full mr-2" 
+                                         :class="analysisResults.waboStatus === 'approved' ? 'bg-afh-green' : 'bg-afh-orange'"></div>
+                                    <span class="capitalize">{{ analysisResults.waboStatus }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Recommendations -->
+                            <div class="p-4 bg-blue-50 rounded-lg">
+                                <h4 class="font-semibold mb-2">Recommendations</h4>
+                                <ul class="space-y-1 text-sm">
+                                    <li v-for="rec in analysisResults.recommendations" :key="rec" class="flex items-start">
+                                        <i class="fas fa-check-circle text-afh-green mr-2 mt-0.5"></i>
+                                        {{ rec }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div v-else class="text-center py-12 text-gray-500">
+                            <i class="fas fa-chart-line text-4xl mb-4"></i>
+                            <p>Enter property details to see analysis results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Property Showcase Section -->
+        <div x-show="activeSection === 'showcase'" class="p-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Featured Property Analysis</h2>
+                <p class="text-gray-600">Showcase of our most successful AFH property analyses</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div v-for="property in showcaseProperties" :key="property.id" 
+                     class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="h-48 bg-gradient-to-r from-afh-blue to-afh-purple flex items-center justify-center">
+                        <i class="fas fa-home text-white text-4xl"></i>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-2">{{ property.address }}</h3>
+                        <p class="text-gray-600 text-sm mb-4">{{ property.county }} County</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-afh-green">${{ property.cashFlow }}</p>
+                                <p class="text-xs text-gray-600">Monthly Cash Flow</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-afh-blue">{{ property.roi }}%</p>
+                                <p class="text-xs text-gray-600">ROI</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full mr-2" 
+                                     :class="property.waboStatus === 'approved' ? 'bg-afh-green' : 'bg-afh-orange'"></div>
+                                <span class="text-sm capitalize">{{ property.waboStatus }}</span>
+                            </div>
+                            <button class="text-afh-blue hover:text-blue-700 text-sm font-medium">
+                                View Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Series Section -->
+        <div x-show="activeSection === 'series'" class="p-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Analysis Series</h2>
+                <p class="text-gray-600">Track and manage your property analysis campaigns</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Series List -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">Active Series</h3>
+                        <button @click="createNewSeries()" 
+                                class="bg-afh-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-plus mr-2"></i>New Series
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div v-for="series in analysisSeries" :key="series.id" 
+                             class="p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                             @click="selectedSeries = series">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-semibold">{{ series.name }}</h4>
+                                    <p class="text-sm text-gray-600">{{ series.properties.length }} properties</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-semibold text-afh-green">{{ series.successRate }}%</p>
+                                    <p class="text-xs text-gray-600">Success Rate</p>
+                                </div>
+                            </div>
+                            <div class="mt-2 bg-gray-200 rounded-full h-2">
+                                <div class="bg-afh-blue h-2 rounded-full" 
+                                     :style="`width: ${series.progress}%`"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Series Details -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">Series Details</h3>
+                    <div v-if="selectedSeries">
+                        <div class="mb-4">
+                            <h4 class="font-semibold">{{ selectedSeries.name }}</h4>
+                            <p class="text-sm text-gray-600">{{ selectedSeries.description }}</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <p class="text-xl font-bold">{{ selectedSeries.properties.length }}</p>
+                                <p class="text-sm text-gray-600">Properties</p>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <p class="text-xl font-bold text-afh-green">{{ selectedSeries.successRate }}%</p>
+                                <p class="text-sm text-gray-600">Success Rate</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <h5 class="font-medium">Properties in Series:</h5>
+                            <div v-for="property in selectedSeries.properties" :key="property.id" 
+                                 class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                <span class="text-sm">{{ property.address }}</span>
+                                <span class="text-sm font-semibold" 
+                                      :class="property.status === 'success' ? 'text-afh-green' : 'text-afh-orange'">
+                                    {{ property.status }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="text-center py-8 text-gray-500">
+                        <i class="fas fa-list-ul text-4xl mb-4"></i>
+                        <p>Select a series to view details</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Automation Status Section -->
+        <div x-show="activeSection === 'automation'" class="p-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Automation Status</h2>
+                <p class="text-gray-600">Monitor your automated property search and analysis system</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Automation Controls -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">System Controls</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div>
+                                <h4 class="font-medium">Daily Search</h4>
+                                <p class="text-sm text-gray-600">Automated property search</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" x-model="automationStatus.dailySearch" 
+                                       class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-afh-blue rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-afh-blue"></div>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div>
+                                <h4 class="font-medium">Email Notifications</h4>
+                                <p class="text-sm text-gray-600">Property alerts via email</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" x-model="automationStatus.emailNotifications" 
+                                       class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-afh-blue rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-afh-blue"></div>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div>
+                                <h4 class="font-medium">SMS Notifications</h4>
+                                <p class="text-sm text-gray-600">Property alerts via SMS</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" x-model="automationStatus.smsNotifications" 
+                                       class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-afh-blue rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-afh-blue"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- System Status -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">System Status</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">Last Search</span>
+                            <span class="text-sm text-gray-600">{{ lastSearchTime }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">Properties Found Today</span>
+                            <span class="text-sm font-semibold text-afh-green">{{ propertiesFoundToday }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">System Uptime</span>
+                            <span class="text-sm text-gray-600">{{ systemUptime }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">Database Status</span>
+                            <span class="text-sm font-semibold text-afh-green">Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AFH Resources Section -->
+        <div x-show="activeSection === 'resources'" class="p-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">AFH Resources & Links</h2>
+                <p class="text-gray-600">Connect with the AFH community and essential resources</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div v-for="resource in afhResources" :key="resource.id" 
+                     class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mr-4"
+                             :class="resource.color">
+                            <i :class="resource.icon + ' text-white text-xl'"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">{{ resource.name }}</h3>
+                            <p class="text-sm text-gray-600">{{ resource.type }}</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-4">{{ resource.description }}</p>
+                    <a :href="resource.url" target="_blank" 
+                       class="inline-flex items-center text-afh-blue hover:text-blue-700 text-sm font-medium">
+                        Visit Resource <i class="fas fa-external-link-alt ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div x-show="activeSection === 'settings'" class="p-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Settings</h2>
+                <p class="text-gray-600">Configure your AFH Property Scout preferences</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Search Settings -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">Search Settings</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Target Counties</label>
+                            <div class="space-y-2">
+                                <label v-for="county in counties" :key="county" class="flex items-center">
+                                    <input type="checkbox" :value="county" x-model="settings.targetCounties" 
+                                           class="mr-2">
+                                    <span class="text-sm">{{ county }}</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="number" x-model="settings.priceRange.min" 
+                                       class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent"
+                                       placeholder="Min Price">
+                                <input type="number" x-model="settings.priceRange.max" 
+                                       class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent"
+                                       placeholder="Max Price">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Minimum Square Feet</label>
+                            <input type="number" x-model="settings.minSqft" 
+                                   class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notification Settings -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">Notification Settings</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" x-model="settings.email" 
+                                   class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                            <input type="tel" x-model="settings.phone" 
+                                   class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Notification Frequency</label>
+                            <select x-model="settings.frequency" 
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-afh-blue focus:border-transparent">
+                                <option value="immediate">Immediate</option>
+                                <option value="hourly">Hourly</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                            </select>
+                        </div>
+                        
+                        <button @click="saveSettings()" 
+                                class="w-full bg-afh-blue text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Save Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function afhApp() {
+            return {
+                sidebarOpen: false,
+                activeSection: 'dashboard',
+                totalProperties: 47,
+                averageCashFlow: 4200,
+                successRate: 89,
+                averageROI: 24.5,
+                
+                analysisSteps: [
+                    { id: 1, name: 'Property Search', progress: 100, completed: true, active: false },
+                    { id: 2, name: 'Data Collection', progress: 100, completed: true, active: false },
+                    { id: 3, name: 'Financial Analysis', progress: 85, completed: false, active: true },
+                    { id: 4, name: 'WABO Assessment', progress: 60, completed: false, active: false },
+                    { id: 5, name: 'Risk Evaluation', progress: 30, completed: false, active: false },
+                    { id: 6, name: 'Report Generation', progress: 0, completed: false, active: false }
+                ],
+                
+                recentActivities: [
+                    { id: 1, message: 'New property found in Kent, WA', time: '2 minutes ago', type: 'success', icon: 'fas fa-home' },
+                    { id: 2, message: 'Analysis completed for Auburn property', time: '15 minutes ago', type: 'success', icon: 'fas fa-chart-line' },
+                    { id: 3, message: 'WABO status updated for Tacoma property', time: '1 hour ago', type: 'info', icon: 'fas fa-info-circle' },
+                    { id: 4, message: 'Daily search completed', time: '2 hours ago', type: 'success', icon: 'fas fa-search' }
+                ],
+                
+                analysisForm: {
+                    address: '',
+                    price: '',
+                    sqft: '',
+                    bedrooms: '',
+                    bathrooms: '',
+                    county: ''
+                },
+                
+                analysisResults: null,
+                
+                showcaseProperties: [
+                    {
+                        id: 1,
+                        address: '123 Main St, Kent, WA',
+                        county: 'King',
+                        cashFlow: 4200,
+                        roi: 28,
+                        waboStatus: 'approved'
+                    },
+                    {
+                        id: 2,
+                        address: '456 Oak Ave, Auburn, WA',
+                        county: 'King',
+                        cashFlow: 3800,
+                        roi: 24,
+                        waboStatus: 'pending'
+                    },
+                    {
+                        id: 3,
+                        address: '789 Pine St, Tacoma, WA',
+                        county: 'Pierce',
+                        cashFlow: 5200,
+                        roi: 32,
+                        waboStatus: 'approved'
+                    }
+                ],
+                
+                analysisSeries: [
+                    {
+                        id: 1,
+                        name: 'King County AFH Properties',
+                        description: 'Comprehensive analysis of King County properties',
+                        progress: 75,
+                        successRate: 85,
+                        properties: [
+                            { id: 1, address: '123 Main St, Kent, WA', status: 'success' },
+                            { id: 2, address: '456 Oak Ave, Auburn, WA', status: 'pending' },
+                            { id: 3, address: '789 Pine St, Seattle, WA', status: 'success' }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        name: 'Pierce County Expansion',
+                        description: 'Exploring Pierce County opportunities',
+                        progress: 45,
+                        successRate: 70,
+                        properties: [
+                            { id: 4, address: '321 Elm St, Tacoma, WA', status: 'success' },
+                            { id: 5, address: '654 Maple Ave, Puyallup, WA', status: 'pending' }
+                        ]
+                    }
+                ],
+                
+                selectedSeries: null,
+                
+                automationStatus: {
+                    dailySearch: true,
+                    emailNotifications: true,
+                    smsNotifications: false
+                },
+                
+                lastSearchTime: '2 hours ago',
+                propertiesFoundToday: 8,
+                systemUptime: '15 days',
+                
+                afhResources: [
+                    {
+                        id: 1,
+                        name: 'AFH Council',
+                        type: 'Official Organization',
+                        description: 'Official AFH Council website with licensing information and resources.',
+                        url: 'https://www.afhcouncil.org',
+                        icon: 'fas fa-building',
+                        color: 'bg-afh-blue'
+                    },
+                    {
+                        id: 2,
+                        name: 'WABO Licensing',
+                        type: 'Government Agency',
+                        description: 'Washington State Building Officials for licensing requirements.',
+                        url: 'https://www.wabo.org',
+                        icon: 'fas fa-certificate',
+                        color: 'bg-afh-green'
+                    },
+                    {
+                        id: 3,
+                        name: 'AFH Facebook Group',
+                        type: 'Community',
+                        description: 'Active Facebook community for AFH operators and investors.',
+                        url: 'https://www.facebook.com/groups/111741582223702',
+                        icon: 'fab fa-facebook',
+                        color: 'bg-blue-600'
+                    },
+                    {
+                        id: 4,
+                        name: 'NWMLS',
+                        type: 'Real Estate',
+                        description: 'Northwest Multiple Listing Service for property listings.',
+                        url: 'https://www.nwmls.com',
+                        icon: 'fas fa-home',
+                        color: 'bg-afh-orange'
+                    },
+                    {
+                        id: 5,
+                        name: 'Zillow',
+                        type: 'Real Estate',
+                        description: 'Popular real estate platform for property research.',
+                        url: 'https://www.zillow.com',
+                        icon: 'fas fa-search',
+                        color: 'bg-blue-500'
+                    },
+                    {
+                        id: 6,
+                        name: 'Redfin',
+                        type: 'Real Estate',
+                        description: 'Technology-powered real estate brokerage.',
+                        url: 'https://www.redfin.com',
+                        icon: 'fas fa-map-marker-alt',
+                        color: 'bg-red-500'
+                    }
+                ],
+                
+                settings: {
+                    targetCounties: ['king', 'pierce'],
+                    priceRange: { min: 400000, max: 800000 },
+                    minSqft: 2000,
+                    email: '',
+                    phone: '',
+                    frequency: 'immediate'
+                },
+                
+                counties: ['King County', 'Pierce County', 'Thurston County', 'Lewis County'],
+                
+                getSectionTitle() {
+                    const titles = {
+                        'dashboard': 'Dashboard',
+                        'analysis': 'Property Analysis',
+                        'showcase': 'Property Showcase',
+                        'series': 'Analysis Series',
+                        'automation': 'Automation Status',
+                        'resources': 'AFH Resources',
+                        'settings': 'Settings'
+                    };
+                    return titles[this.activeSection] || 'Dashboard';
+                },
+                
+                analyzeProperty() {
+                    // Simulate analysis
+                    this.analysisResults = {
+                        monthlyCashFlow: 4200,
+                        capRate: 8.5,
+                        roi: 28,
+                        viabilityScore: 87,
+                        waboStatus: 'approved',
+                        recommendations: [
+                            'Property meets all AFH requirements',
+                            'Strong cash flow potential',
+                            'WABO approval likely within 30 days',
+                            'Consider negotiating 5-10% below asking price'
+                        ]
+                    };
+                },
+                
+                createNewSeries() {
+                    const newSeries = {
+                        id: Date.now(),
+                        name: 'New Analysis Series',
+                        description: 'New series for property analysis',
+                        progress: 0,
+                        successRate: 0,
+                        properties: []
+                    };
+                    this.analysisSeries.push(newSeries);
+                    this.selectedSeries = newSeries;
+                },
+                
+                saveSettings() {
+                    // Simulate saving settings
+                    alert('Settings saved successfully!');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

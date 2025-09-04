@@ -1,0 +1,661 @@
+// AFH Property Scout - Interactive JavaScript
+
+class AFHPropertyScout {
+    constructor() {
+        this.init();
+        this.setupEventListeners();
+        this.loadData();
+    }
+
+    init() {
+        // Initialize the application
+        this.currentSection = 'dashboard';
+        this.isLoading = false;
+        this.notifications = [];
+        this.analysisQueue = [];
+        
+        // Initialize charts and visualizations
+        this.initCharts();
+        
+        // Setup real-time updates
+        this.setupRealTimeUpdates();
+        
+        // Initialize tooltips and modals
+        this.initTooltips();
+    }
+
+    setupEventListeners() {
+        // Navigation
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('[data-section]')) {
+                this.navigateToSection(e.target.dataset.section);
+            }
+        });
+
+        // Property analysis form
+        const analysisForm = document.getElementById('analysisForm');
+        if (analysisForm) {
+            analysisForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.analyzeProperty();
+            });
+        }
+
+        // Search functionality
+        const searchInput = document.querySelector('input[placeholder*="Search"]');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.handleSearch(e.target.value);
+            });
+        }
+
+        // Settings form
+        const settingsForm = document.getElementById('settingsForm');
+        if (settingsForm) {
+            settingsForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.saveSettings();
+            });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            this.handleKeyboardShortcuts(e);
+        });
+
+        // Window events
+        window.addEventListener('resize', () => {
+            this.handleResize();
+        });
+
+        window.addEventListener('beforeunload', () => {
+            this.saveUserPreferences();
+        });
+    }
+
+    navigateToSection(section) {
+        this.currentSection = section;
+        
+        // Update active navigation
+        document.querySelectorAll('[data-section]').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector(`[data-section="${section}"]`).classList.add('active');
+        
+        // Show/hide sections
+        document.querySelectorAll('.section').forEach(sectionEl => {
+            sectionEl.style.display = 'none';
+        });
+        document.getElementById(section).style.display = 'block';
+        
+        // Update page title
+        document.title = `${this.getSectionTitle(section)} - AFH Property Scout`;
+        
+        // Load section-specific data
+        this.loadSectionData(section);
+    }
+
+    getSectionTitle(section) {
+        const titles = {
+            'dashboard': 'Dashboard',
+            'analysis': 'Property Analysis',
+            'showcase': 'Property Showcase',
+            'series': 'Analysis Series',
+            'automation': 'Automation Status',
+            'resources': 'AFH Resources',
+            'settings': 'Settings'
+        };
+        return titles[section] || 'Dashboard';
+    }
+
+    async analyzeProperty() {
+        const form = document.getElementById('analysisForm');
+        const formData = new FormData(form);
+        
+        this.showLoading('Analyzing property...');
+        
+        try {
+            // Simulate API call
+            const result = await this.simulateAnalysis(formData);
+            this.displayAnalysisResults(result);
+            this.addNotification('Property analysis completed successfully!', 'success');
+        } catch (error) {
+            this.addNotification('Analysis failed. Please try again.', 'error');
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    async simulateAnalysis(formData) {
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Generate realistic analysis results
+        const price = parseFloat(formData.get('price')) || 600000;
+        const sqft = parseFloat(formData.get('sqft')) || 2500;
+        
+        return {
+            monthlyCashFlow: Math.floor(price * 0.007 + Math.random() * 1000),
+            capRate: (Math.random() * 4 + 6).toFixed(1),
+            roi: (Math.random() * 15 + 20).toFixed(1),
+            viabilityScore: Math.floor(Math.random() * 20 + 75),
+            waboStatus: Math.random() > 0.3 ? 'approved' : 'pending',
+            recommendations: [
+                'Property meets AFH requirements',
+                'Strong cash flow potential',
+                'Consider negotiating 5-10% below asking price',
+                'WABO approval likely within 30 days'
+            ],
+            analysisDate: new Date().toISOString()
+        };
+    }
+
+    displayAnalysisResults(results) {
+        const resultsContainer = document.getElementById('analysisResults');
+        if (!resultsContainer) return;
+        
+        resultsContainer.innerHTML = `
+            <div class="analysis-results">
+                <h3 class="text-lg font-semibold mb-4">Analysis Results</h3>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-2xl font-bold text-afh-green">$${results.monthlyCashFlow.toLocaleString()}</p>
+                        <p class="text-sm text-gray-600">Monthly Cash Flow</p>
+                    </div>
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-2xl font-bold text-afh-blue">${results.capRate}%</p>
+                        <p class="text-sm text-gray-600">Cap Rate</p>
+                    </div>
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-2xl font-bold text-afh-orange">${results.roi}%</p>
+                        <p class="text-sm text-gray-600">ROI</p>
+                    </div>
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-2xl font-bold ${results.viabilityScore > 80 ? 'text-afh-green' : 'text-afh-orange'}">
+                            ${results.viabilityScore}%
+                        </p>
+                        <p class="text-sm text-gray-600">Viability Score</p>
+                    </div>
+                </div>
+                
+                <div class="p-4 border rounded-lg mb-4">
+                    <h4 class="font-semibold mb-2">WABO Status</h4>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full mr-2 ${results.waboStatus === 'approved' ? 'bg-afh-green' : 'bg-afh-orange'}"></div>
+                        <span class="capitalize">${results.waboStatus}</span>
+                    </div>
+                </div>
+                
+                <div class="p-4 bg-blue-50 rounded-lg">
+                    <h4 class="font-semibold mb-2">Recommendations</h4>
+                    <ul class="space-y-1 text-sm">
+                        ${results.recommendations.map(rec => `
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-afh-green mr-2 mt-0.5"></i>
+                                ${rec}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                
+                <div class="mt-4 flex space-x-2">
+                    <button onclick="afhApp.saveAnalysis()" class="bg-afh-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-save mr-2"></i>Save Analysis
+                    </button>
+                    <button onclick="afhApp.exportAnalysis()" class="bg-afh-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-download mr-2"></i>Export Report
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // Animate the results
+        resultsContainer.style.opacity = '0';
+        resultsContainer.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            resultsContainer.style.transition = 'all 0.3s ease';
+            resultsContainer.style.opacity = '1';
+            resultsContainer.style.transform = 'translateY(0)';
+        }, 100);
+    }
+
+    handleSearch(query) {
+        if (query.length < 2) return;
+        
+        // Simulate search
+        const results = this.searchProperties(query);
+        this.displaySearchResults(results);
+    }
+
+    searchProperties(query) {
+        // Mock search results
+        return [
+            { id: 1, address: '123 Main St, Kent, WA', price: 650000, cashFlow: 4200 },
+            { id: 2, address: '456 Oak Ave, Auburn, WA', price: 580000, cashFlow: 3800 },
+            { id: 3, address: '789 Pine St, Tacoma, WA', price: 720000, cashFlow: 5200 }
+        ].filter(property => 
+            property.address.toLowerCase().includes(query.toLowerCase())
+        );
+    }
+
+    displaySearchResults(results) {
+        // Implementation for search results display
+        console.log('Search results:', results);
+    }
+
+    initCharts() {
+        // Initialize Chart.js or other charting library
+        this.createDashboardCharts();
+        this.createAnalysisCharts();
+    }
+
+    createDashboardCharts() {
+        // Create dashboard visualizations
+        const ctx = document.getElementById('dashboardChart');
+        if (!ctx) return;
+        
+        // Mock chart data
+        const chartData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Properties Found',
+                data: [12, 19, 3, 5, 2, 3],
+                borderColor: '#1e40af',
+                backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                tension: 0.4
+            }]
+        };
+        
+        // Initialize chart (requires Chart.js)
+        // new Chart(ctx, { type: 'line', data: chartData });
+    }
+
+    createAnalysisCharts() {
+        // Create analysis-specific charts
+        console.log('Creating analysis charts...');
+    }
+
+    setupRealTimeUpdates() {
+        // Setup WebSocket or polling for real-time updates
+        setInterval(() => {
+            this.updateSystemStatus();
+        }, 30000); // Update every 30 seconds
+    }
+
+    updateSystemStatus() {
+        // Update system status indicators
+        const statusElements = document.querySelectorAll('.status-indicator');
+        statusElements.forEach(element => {
+            element.classList.toggle('online', Math.random() > 0.1);
+        });
+    }
+
+    initTooltips() {
+        // Initialize tooltip functionality
+        const tooltipElements = document.querySelectorAll('[data-tooltip]');
+        tooltipElements.forEach(element => {
+            element.addEventListener('mouseenter', this.showTooltip);
+            element.addEventListener('mouseleave', this.hideTooltip);
+        });
+    }
+
+    showTooltip(event) {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        tooltip.textContent = event.target.dataset.tooltip;
+        tooltip.style.cssText = `
+            position: absolute;
+            background: #1f2937;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            z-index: 1000;
+            pointer-events: none;
+        `;
+        
+        document.body.appendChild(tooltip);
+        
+        const rect = event.target.getBoundingClientRect();
+        tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
+        tooltip.style.top = rect.top - tooltip.offsetHeight - 8 + 'px';
+    }
+
+    hideTooltip() {
+        const tooltip = document.querySelector('.tooltip');
+        if (tooltip) {
+            tooltip.remove();
+        }
+    }
+
+    addNotification(message, type = 'info') {
+        const notification = {
+            id: Date.now(),
+            message,
+            type,
+            timestamp: new Date()
+        };
+        
+        this.notifications.unshift(notification);
+        this.displayNotification(notification);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            this.removeNotification(notification.id);
+        }, 5000);
+    }
+
+    displayNotification(notification) {
+        const container = document.getElementById('notifications') || this.createNotificationContainer();
+        
+        const notificationEl = document.createElement('div');
+        notificationEl.className = `notification notification-${notification.type}`;
+        notificationEl.innerHTML = `
+            <div class="flex items-center justify-between p-4 rounded-lg shadow-lg mb-2">
+                <div class="flex items-center">
+                    <i class="fas fa-${this.getNotificationIcon(notification.type)} mr-2"></i>
+                    <span>${notification.message}</span>
+                </div>
+                <button onclick="afhApp.removeNotification(${notification.id})" class="ml-4 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        
+        container.appendChild(notificationEl);
+        
+        // Animate in
+        notificationEl.style.transform = 'translateX(100%)';
+        notificationEl.style.transition = 'transform 0.3s ease';
+        setTimeout(() => {
+            notificationEl.style.transform = 'translateX(0)';
+        }, 100);
+    }
+
+    createNotificationContainer() {
+        const container = document.createElement('div');
+        container.id = 'notifications';
+        container.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        `;
+        document.body.appendChild(container);
+        return container;
+    }
+
+    getNotificationIcon(type) {
+        const icons = {
+            success: 'check-circle',
+            error: 'exclamation-circle',
+            warning: 'exclamation-triangle',
+            info: 'info-circle'
+        };
+        return icons[type] || 'info-circle';
+    }
+
+    removeNotification(id) {
+        this.notifications = this.notifications.filter(n => n.id !== id);
+        const notificationEl = document.querySelector(`[data-notification-id="${id}"]`);
+        if (notificationEl) {
+            notificationEl.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                notificationEl.remove();
+            }, 300);
+        }
+    }
+
+    showLoading(message = 'Loading...') {
+        this.isLoading = true;
+        const loadingEl = document.createElement('div');
+        loadingEl.id = 'loading-overlay';
+        loadingEl.innerHTML = `
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white rounded-lg p-6 flex items-center">
+                    <div class="loading-spinner mr-3"></div>
+                    <span>${message}</span>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(loadingEl);
+    }
+
+    hideLoading() {
+        this.isLoading = false;
+        const loadingEl = document.getElementById('loading-overlay');
+        if (loadingEl) {
+            loadingEl.remove();
+        }
+    }
+
+    handleKeyboardShortcuts(event) {
+        // Ctrl/Cmd + K for search
+        if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+            event.preventDefault();
+            document.querySelector('input[placeholder*="Search"]')?.focus();
+        }
+        
+        // Escape to close modals
+        if (event.key === 'Escape') {
+            this.closeModals();
+        }
+        
+        // Number keys for navigation
+        if (event.key >= '1' && event.key <= '7') {
+            const sections = ['dashboard', 'analysis', 'showcase', 'series', 'automation', 'resources', 'settings'];
+            const sectionIndex = parseInt(event.key) - 1;
+            if (sections[sectionIndex]) {
+                this.navigateToSection(sections[sectionIndex]);
+            }
+        }
+    }
+
+    closeModals() {
+        // Close any open modals
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.style.display = 'none';
+        });
+    }
+
+    handleResize() {
+        // Handle window resize
+        this.updateLayout();
+    }
+
+    updateLayout() {
+        // Update layout based on screen size
+        const isMobile = window.innerWidth < 768;
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('mobile', isMobile);
+        }
+    }
+
+    loadData() {
+        // Load initial data
+        this.loadDashboardData();
+        this.loadPropertyData();
+        this.loadSettings();
+    }
+
+    async loadDashboardData() {
+        try {
+            // Simulate API call
+            const data = await this.fetchDashboardData();
+            this.updateDashboard(data);
+        } catch (error) {
+            console.error('Failed to load dashboard data:', error);
+        }
+    }
+
+    async fetchDashboardData() {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        return {
+            totalProperties: 47,
+            averageCashFlow: 4200,
+            successRate: 89,
+            averageROI: 24.5,
+            recentActivity: [
+                { message: 'New property found in Kent, WA', time: '2 minutes ago' },
+                { message: 'Analysis completed for Auburn property', time: '15 minutes ago' }
+            ]
+        };
+    }
+
+    updateDashboard(data) {
+        // Update dashboard with new data
+        document.querySelector('[data-stat="properties"]')?.textContent = data.totalProperties;
+        document.querySelector('[data-stat="cashflow"]')?.textContent = `$${data.averageCashFlow}`;
+        document.querySelector('[data-stat="success"]')?.textContent = `${data.successRate}%`;
+        document.querySelector('[data-stat="roi"]')?.textContent = `${data.averageROI}%`;
+    }
+
+    loadPropertyData() {
+        // Load property data
+        console.log('Loading property data...');
+    }
+
+    loadSettings() {
+        // Load user settings
+        const settings = localStorage.getItem('afh-settings');
+        if (settings) {
+            this.settings = JSON.parse(settings);
+            this.applySettings();
+        }
+    }
+
+    saveSettings() {
+        // Save user settings
+        const form = document.getElementById('settingsForm');
+        const formData = new FormData(form);
+        
+        const settings = {
+            targetCounties: Array.from(formData.getAll('counties')),
+            priceRange: {
+                min: formData.get('priceMin'),
+                max: formData.get('priceMax')
+            },
+            notifications: {
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                frequency: formData.get('frequency')
+            }
+        };
+        
+        localStorage.setItem('afh-settings', JSON.stringify(settings));
+        this.addNotification('Settings saved successfully!', 'success');
+    }
+
+    applySettings() {
+        // Apply loaded settings to the UI
+        if (this.settings) {
+            // Apply settings to form elements
+            console.log('Applying settings:', this.settings);
+        }
+    }
+
+    saveUserPreferences() {
+        // Save user preferences before page unload
+        const preferences = {
+            currentSection: this.currentSection,
+            sidebarOpen: document.querySelector('.sidebar')?.classList.contains('open'),
+            lastVisit: new Date().toISOString()
+        };
+        
+        localStorage.setItem('afh-preferences', JSON.stringify(preferences));
+    }
+
+    loadSectionData(section) {
+        // Load data specific to the current section
+        switch (section) {
+            case 'dashboard':
+                this.loadDashboardData();
+                break;
+            case 'analysis':
+                this.loadAnalysisData();
+                break;
+            case 'showcase':
+                this.loadShowcaseData();
+                break;
+            case 'series':
+                this.loadSeriesData();
+                break;
+            case 'automation':
+                this.loadAutomationData();
+                break;
+            case 'resources':
+                this.loadResourcesData();
+                break;
+            case 'settings':
+                this.loadSettingsData();
+                break;
+        }
+    }
+
+    loadAnalysisData() {
+        console.log('Loading analysis data...');
+    }
+
+    loadShowcaseData() {
+        console.log('Loading showcase data...');
+    }
+
+    loadSeriesData() {
+        console.log('Loading series data...');
+    }
+
+    loadAutomationData() {
+        console.log('Loading automation data...');
+    }
+
+    loadResourcesData() {
+        console.log('Loading resources data...');
+    }
+
+    loadSettingsData() {
+        console.log('Loading settings data...');
+    }
+
+    // Utility methods
+    formatCurrency(amount) {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(amount);
+    }
+
+    formatDate(date) {
+        return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        }).format(new Date(date));
+    }
+
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+}
+
+// Initialize the application when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.afhApp = new AFHPropertyScout();
+});
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AFHPropertyScout;
+}
