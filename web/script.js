@@ -43,6 +43,21 @@ class AFHPropertyScout {
         this.recentAnalyses = [
             {
                 id: 1,
+                address: '1713 Winterwood Drive, Centralia, WA',
+                price: 600000,
+                sqft: 2100,
+                bedrooms: 3,
+                bathrooms: 2,
+                county: 'Lewis',
+                cashFlow: 3200,
+                roi: 12.8,
+                viabilityScore: 78,
+                waboStatus: 'approved',
+                analysisDate: new Date().toISOString(),
+                recommendation: 'Recommended with conditions - Good potential'
+            },
+            {
+                id: 2,
                 address: '7021 Southwick Court SW, Olympia, WA',
                 price: 529999,
                 sqft: 1882,
@@ -53,7 +68,7 @@ class AFHPropertyScout {
                 roi: 7.8,
                 viabilityScore: 45,
                 waboStatus: 'insufficient',
-                analysisDate: new Date().toISOString(),
+                analysisDate: new Date(Date.now() - 3600000).toISOString(),
                 recommendation: 'Not Recommended - Insufficient sqft'
             },
             {
@@ -102,8 +117,15 @@ class AFHPropertyScout {
         this.recentActivities = [
             { 
                 id: 1, 
+                message: 'Centralia property analysis completed - Recommended with conditions (78% viability)', 
+                time: '1 minute ago', 
+                type: 'success', 
+                icon: 'fas fa-check-circle' 
+            },
+            { 
+                id: 2, 
                 message: 'Olympia property analysis completed - Not recommended (45% viability)', 
-                time: '2 minutes ago', 
+                time: '1 hour ago', 
                 type: 'warning', 
                 icon: 'fas fa-exclamation-triangle' 
             },

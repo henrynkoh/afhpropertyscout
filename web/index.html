@@ -187,7 +187,7 @@
 
             <!-- Progress Tracking -->
             <div class="bg-white rounded-lg shadow p-6 mb-8">
-                <h3 class="text-lg font-semibold mb-4">Latest Analysis: 7021 Southwick Court SW, Olympia, WA</h3>
+                <h3 class="text-lg font-semibold mb-4">Latest Analysis: 1713 Winterwood Drive, Centralia, WA</h3>
                 <div class="space-y-4">
                     <div class="flex items-center">
                         <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-afh-green text-white">
@@ -281,19 +281,22 @@
                 </div>
                 
                 <!-- Analysis Result Summary -->
-                <div class="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                     <div class="flex items-center">
-                        <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
-                        <h4 class="font-semibold text-red-800">Analysis Complete - Not Recommended</h4>
+                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                        <h4 class="font-semibold text-green-800">Analysis Complete - Recommended with Conditions</h4>
                     </div>
-                    <p class="text-sm text-red-700 mt-2">
-                        <strong>Viability Score: 45%</strong> - Insufficient square footage (1,882 sqft vs 2,000 sqft minimum requirement)
+                    <p class="text-sm text-green-700 mt-2">
+                        <strong>Viability Score: 78%</strong> - Meets AFH requirements with good potential
                     </p>
-                    <p class="text-sm text-red-700">
-                        <strong>Monthly Cash Flow: $2,748</strong> - Below target of $3,000+
+                    <p class="text-sm text-green-700">
+                        <strong>Monthly Cash Flow: $3,200</strong> - Above target of $3,000+
                     </p>
-                    <p class="text-sm text-red-700">
-                        <strong>ROI: 7.8%</strong> - Well below target of 15-25%
+                    <p class="text-sm text-green-700">
+                        <strong>ROI: 12.8%</strong> - Within acceptable range, room for improvement
+                    </p>
+                    <p class="text-sm text-green-700">
+                        <strong>WABO Status: Approved</strong> - Meets licensing requirements
                     </p>
                 </div>
             </div>
@@ -302,6 +305,18 @@
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
                 <div class="space-y-3">
+                    <div class="flex items-center p-3 bg-green-50 rounded-lg border border-green-200">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-green-500 text-white">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium text-gray-900">Centralia property analysis completed - Recommended with conditions (78% viability)</p>
+                            <p class="text-xs text-gray-500">1 minute ago</p>
+                        </div>
+                    </div>
+                    
                     <div class="flex items-center p-3 bg-red-50 rounded-lg border border-red-200">
                         <div class="flex-shrink-0">
                             <div class="w-8 h-8 rounded-full flex items-center justify-center bg-red-500 text-white">
@@ -310,7 +325,7 @@
                         </div>
                         <div class="ml-3 flex-1">
                             <p class="text-sm font-medium text-gray-900">Olympia property analysis completed - Not recommended (45% viability)</p>
-                            <p class="text-xs text-gray-500">2 minutes ago</p>
+                            <p class="text-xs text-gray-500">1 hour ago</p>
                         </div>
                     </div>
                     
@@ -482,6 +497,44 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Centralia Property (Recommended with Conditions) -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-2 border-green-200">
+                    <div class="h-48 bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
+                        <i class="fas fa-home text-white text-4xl"></i>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-2">1713 Winterwood Drive, Centralia, WA</h3>
+                        <p class="text-gray-600 text-sm mb-4">Lewis County</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-green-500">$3,200</p>
+                                <p class="text-xs text-gray-600">Monthly Cash Flow</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-green-500">12.8%</p>
+                                <p class="text-xs text-gray-600">ROI</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4 p-3 bg-green-50 rounded-lg">
+                            <p class="text-sm font-semibold text-green-800">Viability Score: 78%</p>
+                            <p class="text-xs text-green-600">Recommended with conditions - Good potential</p>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full mr-2 bg-green-500"></div>
+                                <span class="text-sm text-green-600">Approved</span>
+                            </div>
+                            <button class="text-green-600 hover:text-green-700 text-sm font-medium">
+                                View Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Olympia Property (Not Recommended) -->
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-2 border-red-200">
                     <div class="h-48 bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center">
