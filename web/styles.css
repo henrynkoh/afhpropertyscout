@@ -518,3 +518,54 @@ input:checked + .toggle-slider:before {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
+
+/* Line Clamp Utility */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Modal Animations */
+#resource-modal {
+    animation: fadeIn 0.3s ease-out;
+}
+
+#resource-modal .bg-white {
+    animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modal Backdrop Click */
+#resource-modal {
+    backdrop-filter: blur(4px);
+}
+
+/* Resource Card Click Effects */
+.resource-card-clickable {
+    transition: all 0.2s ease;
+}
+
+.resource-card-clickable:active {
+    transform: scale(0.98);
+}

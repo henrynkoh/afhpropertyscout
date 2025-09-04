@@ -1253,9 +1253,10 @@ class AFHPropertyScout {
                 </div>
             `;
         } else {
-            categoryResources.forEach(resource => {
+            categoryResources.forEach((resource, index) => {
                 html += `
-                    <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-gray-200 p-6">
+                    <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 p-6 cursor-pointer transform hover:scale-105" 
+                         onclick="showResourceModal('${category}', ${index})">
                         <div class="flex items-start mb-4">
                             <div class="flex-shrink-0">
                                 <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center mr-4">
@@ -1265,18 +1266,17 @@ class AFHPropertyScout {
                             <div class="flex-1">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-1">${resource.name}</h3>
                                 <p class="text-sm text-gray-600 mb-3">${resource.type}</p>
-                                <p class="text-sm text-gray-700 leading-relaxed">${resource.description}</p>
+                                <p class="text-sm text-gray-700 leading-relaxed line-clamp-3">${resource.description}</p>
                             </div>
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center text-xs text-gray-500">
-                                <i class="fas fa-external-link-alt mr-1"></i>
-                                <span>External Link</span>
+                                <i class="fas fa-info-circle mr-1"></i>
+                                <span>Click for details</span>
                             </div>
-                            <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
-                               class="inline-flex items-center px-4 py-2 bg-afh-blue text-white rounded-lg hover:bg-afh-green transition-colors font-medium text-sm">
-                                Visit Resource <i class="fas fa-arrow-right ml-2"></i>
-                            </a>
+                            <div class="inline-flex items-center px-4 py-2 bg-afh-blue text-white rounded-lg font-medium text-sm">
+                                View Details <i class="fas fa-arrow-right ml-2"></i>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1344,6 +1344,113 @@ class AFHPropertyScout {
         console.log('Loading settings data...');
     }
 
+    showResourceModal(category, index) {
+        const categoryResources = this.afhResources.filter(resource => resource.category === category);
+        const resource = categoryResources[index];
+        
+        if (!resource) {
+            console.error('Resource not found');
+            return;
+        }
+
+        // Create modal HTML
+        const modalHtml = `
+            <div id="resource-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <!-- Modal Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center">
+                                <div class="w-16 h-16 rounded-lg bg-blue-50 flex items-center justify-center mr-4">
+                                    <i class="${resource.icon} text-2xl text-afh-blue"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-2xl font-bold text-gray-800">${resource.name}</h2>
+                                    <p class="text-gray-600">${resource.type}</p>
+                                </div>
+                            </div>
+                            <button onclick="closeResourceModal()" class="text-gray-400 hover:text-gray-600 text-2xl">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <!-- Modal Content -->
+                        <div class="space-y-6">
+                            <!-- Description -->
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-3">Description</h3>
+                                <p class="text-gray-700 leading-relaxed">${resource.description}</p>
+                            </div>
+
+                            <!-- Category Info -->
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-3">Category</h3>
+                                <div class="flex items-center">
+                                    <i class="${this.getCategoryIcon(category)} text-lg mr-2 text-afh-blue"></i>
+                                    <span class="text-gray-700">${this.getCategoryDisplayName(category)}</span>
+                                </div>
+                            </div>
+
+                            <!-- URL Info -->
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-3">Website</h3>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <p class="text-sm text-gray-600 mb-2">Official URL:</p>
+                                    <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
+                                       class="text-afh-blue hover:text-afh-green break-all">
+                                        ${resource.url}
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="flex space-x-4 pt-4 border-t border-gray-200">
+                                <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
+                                   class="flex-1 bg-afh-blue text-white px-6 py-3 rounded-lg hover:bg-afh-green transition-colors font-medium text-center">
+                                    <i class="fas fa-external-link-alt mr-2"></i>
+                                    Visit Website
+                                </a>
+                                <button onclick="closeResourceModal()" 
+                                        class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Remove existing modal if any
+        const existingModal = document.getElementById('resource-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        // Add modal to page
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
+        // Add escape key listener
+        const escapeHandler = (event) => {
+            if (event.key === 'Escape') {
+                this.closeResourceModal();
+            }
+        };
+        document.addEventListener('keydown', escapeHandler);
+        this.currentEscapeHandler = escapeHandler;
+    }
+
+    closeResourceModal() {
+        const modal = document.getElementById('resource-modal');
+        if (modal) {
+            modal.remove();
+        }
+        if (this.currentEscapeHandler) {
+            document.removeEventListener('keydown', this.currentEscapeHandler);
+            this.currentEscapeHandler = null;
+        }
+    }
+
     // Utility methods
     formatCurrency(amount) {
         return new Intl.NumberFormat('en-US', {
@@ -1381,6 +1488,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.selectResourceCategory = (category) => {
         if (window.afhApp) {
             window.afhApp.selectResourceCategory(category);
+        }
+    };
+    
+    // Make modal functions globally accessible
+    window.showResourceModal = (category, index) => {
+        if (window.afhApp) {
+            window.afhApp.showResourceModal(category, index);
+        }
+    };
+    
+    window.closeResourceModal = () => {
+        if (window.afhApp) {
+            window.afhApp.closeResourceModal();
         }
     };
 });
