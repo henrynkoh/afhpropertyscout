@@ -559,6 +559,14 @@ class AFHPropertyScout {
                 category: 'technology',
                 icon: 'fas fa-clipboard-check'
             },
+            { 
+                name: 'GenSpark AI - AFH Property Analysis', 
+                type: 'AI Technology Platform', 
+                description: 'Advanced AI-powered property analysis and insights for AFH property evaluation and investment decisions',
+                url: 'https://www.genspark.ai/api/page_private?id=ttdhezcf',
+                category: 'technology',
+                icon: 'fas fa-robot'
+            },
             
             // Legal and Compliance
             { 
