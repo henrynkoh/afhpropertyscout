@@ -1195,6 +1195,9 @@ class AFHPropertyScout {
 
     loadResourcesData() {
         console.log('Loading resources data...');
+        console.log('Total resources available:', this.afhResources.length);
+        console.log('Technology resources:', this.afhResources.filter(r => r.category === 'technology'));
+        
         this.currentResourceCategory = 'official'; // Default category
         this.selectResourceCategory('official');
         
@@ -1509,6 +1512,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.closeResourceModal = () => {
         if (window.afhApp) {
             window.afhApp.closeResourceModal();
+        }
+    };
+    
+    // Test function to show GenSpark AI resource
+    window.testGenSpark = () => {
+        if (window.afhApp) {
+            console.log('Testing GenSpark AI resource...');
+            const techResources = window.afhApp.afhResources.filter(r => r.category === 'technology');
+            console.log('Technology resources:', techResources);
+            const genSpark = techResources.find(r => r.name.includes('GenSpark'));
+            console.log('GenSpark resource:', genSpark);
+            if (genSpark) {
+                window.afhApp.showResourceModal('technology', techResources.indexOf(genSpark));
+            }
         }
     };
 });
