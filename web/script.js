@@ -1189,9 +1189,15 @@ class AFHPropertyScout {
         console.log('Loading resources data...');
         this.currentResourceCategory = 'official'; // Default category
         this.selectResourceCategory('official');
+        
+        // Make sure the resources are displayed
+        setTimeout(() => {
+            this.displayCategoryResources('official');
+        }, 100);
     }
 
     selectResourceCategory(category) {
+        console.log('Selecting category:', category);
         this.currentResourceCategory = category;
         
         // Update active button styling
@@ -1211,10 +1217,16 @@ class AFHPropertyScout {
     }
 
     displayCategoryResources(category) {
+        console.log('Displaying resources for category:', category);
         const contentContainer = document.getElementById('resources-content');
-        if (!contentContainer) return;
+        if (!contentContainer) {
+            console.error('Resources content container not found');
+            return;
+        }
 
         const categoryResources = this.afhResources.filter(resource => resource.category === category);
+        console.log('Found resources:', categoryResources.length);
+        
         const categoryName = this.getCategoryDisplayName(category);
         const categoryIcon = this.getCategoryIcon(category);
         
@@ -1232,38 +1244,49 @@ class AFHPropertyScout {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         `;
         
-        categoryResources.forEach(resource => {
+        if (categoryResources.length === 0) {
             html += `
-                <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-gray-200 p-6">
-                    <div class="flex items-start mb-4">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center mr-4">
-                                <i class="${resource.icon} text-xl text-afh-blue"></i>
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${resource.name}</h3>
-                            <p class="text-sm text-gray-600 mb-3">${resource.type}</p>
-                            <p class="text-sm text-gray-700 leading-relaxed">${resource.description}</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center text-xs text-gray-500">
-                            <i class="fas fa-external-link-alt mr-1"></i>
-                            <span>External Link</span>
-                        </div>
-                        <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
-                           class="inline-flex items-center px-4 py-2 bg-afh-blue text-white rounded-lg hover:bg-afh-green transition-colors font-medium text-sm">
-                            Visit Resource <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
+                <div class="col-span-2 text-center py-12">
+                    <i class="fas fa-info-circle text-4xl text-gray-400 mb-4"></i>
+                    <h3 class="text-lg font-semibold text-gray-600 mb-2">No Resources Found</h3>
+                    <p class="text-gray-500">No resources available for this category.</p>
                 </div>
             `;
-        });
+        } else {
+            categoryResources.forEach(resource => {
+                html += `
+                    <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-gray-200 p-6">
+                        <div class="flex items-start mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center mr-4">
+                                    <i class="${resource.icon} text-xl text-afh-blue"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-1">${resource.name}</h3>
+                                <p class="text-sm text-gray-600 mb-3">${resource.type}</p>
+                                <p class="text-sm text-gray-700 leading-relaxed">${resource.description}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-external-link-alt mr-1"></i>
+                                <span>External Link</span>
+                            </div>
+                            <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
+                               class="inline-flex items-center px-4 py-2 bg-afh-blue text-white rounded-lg hover:bg-afh-green transition-colors font-medium text-sm">
+                                Visit Resource <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
         
         html += `</div>`;
         
         contentContainer.innerHTML = html;
+        console.log('Resources displayed successfully');
     }
 
     groupResourcesByCategory() {
@@ -1353,6 +1376,13 @@ class AFHPropertyScout {
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.afhApp = new AFHPropertyScout();
+    
+    // Make selectResourceCategory globally accessible
+    window.selectResourceCategory = (category) => {
+        if (window.afhApp) {
+            window.afhApp.selectResourceCategory(category);
+        }
+    };
 });
 
 // Export for use in other modules
