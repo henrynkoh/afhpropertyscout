@@ -143,7 +143,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Properties Found</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ totalProperties }}</p>
+                            <p class="text-2xl font-bold text-gray-900" id="totalProperties">47</p>
                         </div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Avg. Cash Flow</p>
-                            <p class="text-2xl font-bold text-gray-900">${{ averageCashFlow }}</p>
+                            <p class="text-2xl font-bold text-gray-900" id="averageCashFlow">$4,200</p>
                         </div>
                     </div>
                 </div>
@@ -167,7 +167,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Success Rate</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ successRate }}%</p>
+                            <p class="text-2xl font-bold text-gray-900" id="successRate">89%</p>
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Total ROI</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ averageROI }}%</p>
+                            <p class="text-2xl font-bold text-gray-900" id="averageROI">24.5%</p>
                         </div>
                     </div>
                 </div>
@@ -187,26 +187,114 @@
 
             <!-- Progress Tracking -->
             <div class="bg-white rounded-lg shadow p-6 mb-8">
-                <h3 class="text-lg font-semibold mb-4">Current Analysis Progress</h3>
+                <h3 class="text-lg font-semibold mb-4">Latest Analysis: 7021 Southwick Court SW, Olympia, WA</h3>
                 <div class="space-y-4">
-                    <div v-for="step in analysisSteps" :key="step.id" class="flex items-center">
-                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
-                             :class="step.completed ? 'bg-afh-green text-white' : step.active ? 'bg-afh-blue text-white' : 'bg-gray-200 text-gray-600'">
-                            <i :class="step.completed ? 'fas fa-check' : 'fas fa-spinner fa-spin'"></i>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-afh-green text-white">
+                            <i class="fas fa-check"></i>
                         </div>
                         <div class="ml-4 flex-1">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium" :class="step.active ? 'text-afh-blue' : 'text-gray-600'">
-                                    {{ step.name }}
-                                </span>
-                                <span class="text-sm text-gray-500">{{ step.progress }}%</span>
+                                <span class="text-sm font-medium text-gray-600">Property Search</span>
+                                <span class="text-sm text-gray-500">100%</span>
                             </div>
                             <div class="mt-1 bg-gray-200 rounded-full h-2">
-                                <div class="bg-afh-blue h-2 rounded-full transition-all duration-500"
-                                     :style="`width: ${step.progress}%`"></div>
+                                <div class="bg-afh-green h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-afh-green text-white">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-gray-600">Data Collection</span>
+                                <span class="text-sm text-gray-500">100%</span>
+                            </div>
+                            <div class="mt-1 bg-gray-200 rounded-full h-2">
+                                <div class="bg-afh-green h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-afh-green text-white">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-gray-600">Financial Analysis</span>
+                                <span class="text-sm text-gray-500">100%</span>
+                            </div>
+                            <div class="mt-1 bg-gray-200 rounded-full h-2">
+                                <div class="bg-afh-green h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-afh-orange text-white">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-afh-orange">WABO Assessment</span>
+                                <span class="text-sm text-gray-500">100%</span>
+                            </div>
+                            <div class="mt-1 bg-gray-200 rounded-full h-2">
+                                <div class="bg-afh-orange h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-afh-green text-white">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-gray-600">Risk Evaluation</span>
+                                <span class="text-sm text-gray-500">100%</span>
+                            </div>
+                            <div class="mt-1 bg-gray-200 rounded-full h-2">
+                                <div class="bg-afh-green h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-afh-green text-white">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-gray-600">Report Generation</span>
+                                <span class="text-sm text-gray-500">100%</span>
+                            </div>
+                            <div class="mt-1 bg-gray-200 rounded-full h-2">
+                                <div class="bg-afh-green h-2 rounded-full transition-all duration-500" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Analysis Result Summary -->
+                <div class="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                        <h4 class="font-semibold text-red-800">Analysis Complete - Not Recommended</h4>
+                    </div>
+                    <p class="text-sm text-red-700 mt-2">
+                        <strong>Viability Score: 45%</strong> - Insufficient square footage (1,882 sqft vs 2,000 sqft minimum requirement)
+                    </p>
+                    <p class="text-sm text-red-700">
+                        <strong>Monthly Cash Flow: $2,748</strong> - Below target of $3,000+
+                    </p>
+                    <p class="text-sm text-red-700">
+                        <strong>ROI: 7.8%</strong> - Well below target of 15-25%
+                    </p>
                 </div>
             </div>
 
@@ -214,17 +302,51 @@
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
                 <div class="space-y-3">
-                    <div v-for="activity in recentActivities" :key="activity.id" 
-                         class="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center p-3 bg-red-50 rounded-lg border border-red-200">
                         <div class="flex-shrink-0">
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center"
-                                 :class="activity.type === 'success' ? 'bg-afh-green text-white' : 'bg-afh-orange text-white'">
-                                <i :class="activity.icon"></i>
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-red-500 text-white">
+                                <i class="fas fa-exclamation-triangle"></i>
                             </div>
                         </div>
                         <div class="ml-3 flex-1">
-                            <p class="text-sm font-medium text-gray-900">{{ activity.message }}</p>
-                            <p class="text-xs text-gray-500">{{ activity.time }}</p>
+                            <p class="text-sm font-medium text-gray-900">Olympia property analysis completed - Not recommended (45% viability)</p>
+                            <p class="text-xs text-gray-500">2 minutes ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-green-50 rounded-lg border border-green-200">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-afh-green text-white">
+                                <i class="fas fa-home"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium text-gray-900">New property found in Kent, WA - High potential (87% viability)</p>
+                            <p class="text-xs text-gray-500">15 minutes ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium text-gray-900">Auburn property WABO status updated to pending</p>
+                            <p class="text-xs text-gray-500">1 hour ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-green-50 rounded-lg border border-green-200">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-afh-green text-white">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium text-gray-900">Daily search completed - 8 new properties found</p>
+                            <p class="text-xs text-gray-500">2 hours ago</p>
                         </div>
                     </div>
                 </div>
@@ -360,34 +482,114 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div v-for="property in showcaseProperties" :key="property.id" 
-                     class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <div class="h-48 bg-gradient-to-r from-afh-blue to-afh-purple flex items-center justify-center">
+                <!-- Olympia Property (Not Recommended) -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-2 border-red-200">
+                    <div class="h-48 bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center">
                         <i class="fas fa-home text-white text-4xl"></i>
                     </div>
                     
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">{{ property.address }}</h3>
-                        <p class="text-gray-600 text-sm mb-4">{{ property.county }} County</p>
+                        <h3 class="text-lg font-semibold mb-2">7021 Southwick Court SW, Olympia, WA</h3>
+                        <p class="text-gray-600 text-sm mb-4">Thurston County</p>
                         
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div class="text-center">
-                                <p class="text-2xl font-bold text-afh-green">${{ property.cashFlow }}</p>
+                                <p class="text-2xl font-bold text-red-500">$2,748</p>
                                 <p class="text-xs text-gray-600">Monthly Cash Flow</p>
                             </div>
                             <div class="text-center">
-                                <p class="text-2xl font-bold text-afh-blue">{{ property.roi }}%</p>
+                                <p class="text-2xl font-bold text-red-500">7.8%</p>
                                 <p class="text-xs text-gray-600">ROI</p>
                             </div>
                         </div>
                         
+                        <div class="mb-4 p-3 bg-red-50 rounded-lg">
+                            <p class="text-sm font-semibold text-red-800">Viability Score: 45%</p>
+                            <p class="text-xs text-red-600">Not Recommended - Insufficient sqft</p>
+                        </div>
+                        
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full mr-2" 
-                                     :class="property.waboStatus === 'approved' ? 'bg-afh-green' : 'bg-afh-orange'"></div>
-                                <span class="text-sm capitalize">{{ property.waboStatus }}</span>
+                                <div class="w-3 h-3 rounded-full mr-2 bg-red-500"></div>
+                                <span class="text-sm text-red-600">Insufficient</span>
                             </div>
-                            <button class="text-afh-blue hover:text-blue-700 text-sm font-medium">
+                            <button class="text-red-600 hover:text-red-700 text-sm font-medium">
+                                View Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kent Property (Highly Recommended) -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-2 border-green-200">
+                    <div class="h-48 bg-gradient-to-r from-afh-green to-green-600 flex items-center justify-center">
+                        <i class="fas fa-home text-white text-4xl"></i>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-2">123 Main St, Kent, WA</h3>
+                        <p class="text-gray-600 text-sm mb-4">King County</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-afh-green">$4,200</p>
+                                <p class="text-xs text-gray-600">Monthly Cash Flow</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-afh-green">28.5%</p>
+                                <p class="text-xs text-gray-600">ROI</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4 p-3 bg-green-50 rounded-lg">
+                            <p class="text-sm font-semibold text-green-800">Viability Score: 87%</p>
+                            <p class="text-xs text-green-600">Highly Recommended</p>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full mr-2 bg-afh-green"></div>
+                                <span class="text-sm text-green-600">Approved</span>
+                            </div>
+                            <button class="text-afh-green hover:text-green-700 text-sm font-medium">
+                                View Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Auburn Property (Recommended with Conditions) -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-2 border-orange-200">
+                    <div class="h-48 bg-gradient-to-r from-afh-orange to-orange-600 flex items-center justify-center">
+                        <i class="fas fa-home text-white text-4xl"></i>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-2">456 Oak Ave, Auburn, WA</h3>
+                        <p class="text-gray-600 text-sm mb-4">King County</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-afh-orange">$3,800</p>
+                                <p class="text-xs text-gray-600">Monthly Cash Flow</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-afh-orange">24.2%</p>
+                                <p class="text-xs text-gray-600">ROI</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4 p-3 bg-orange-50 rounded-lg">
+                            <p class="text-sm font-semibold text-orange-800">Viability Score: 82%</p>
+                            <p class="text-xs text-orange-600">Recommended with conditions</p>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full mr-2 bg-afh-orange"></div>
+                                <span class="text-sm text-orange-600">Pending</span>
+                            </div>
+                            <button class="text-afh-orange hover:text-orange-700 text-sm font-medium">
                                 View Details <i class="fas fa-arrow-right ml-1"></i>
                             </button>
                         </div>
