@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Washington AFH Property Match Dashboard - Private Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e40af 100%);
+        }
+        .compliance-banner {
+            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+        }
+        .pro-tip {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .floating-element {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.05;
+            animation: float 15s ease-in-out infinite;
+        }
+        .floating-element:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .floating-element:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .floating-element:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 6s; }
+        .floating-element:nth-child(5) { top: 50%; left: 5%; animation-delay: 8s; }
+        .floating-element:nth-child(6) { top: 60%; right: 5%; animation-delay: 10s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="floating-elements">
+        <div class="floating-element">🏠</div>
+        <div class="floating-element">🏥</div>
+        <div class="floating-element">💚</div>
+        <div class="floating-element">👴</div>
+        <div class="floating-element">💊</div>
+        <div class="floating-element">📊</div>
+    </div>
+
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-home text-4xl mr-4"></i>
+                    <div>
+                        <h1 class="text-3xl font-bold">Washington AFH Property Match Dashboard</h1>
+                        <p class="text-blue-200 text-lg">Private Preview - Compliant Property Matching & Resource Guide</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#resources" class="text-white hover:text-blue-200 transition-colors">Resources</a>
+                    <a href="#mls-alerts" class="text-white hover:text-blue-200 transition-colors">MLS Alerts</a>
+                    <a href="#counties" class="text-white hover:text-blue-200 transition-colors">Counties</a>
+                    <a href="#getting-started" class="text-white hover:text-blue-200 transition-colors">Getting Started</a>
+                    <a href="#legal" class="text-white hover:text-blue-200 transition-colors">Legal</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Compliance Notice -->
+    <div class="compliance-banner text-black py-4">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-triangle text-2xl mr-4"></i>
+                <p class="font-semibold">
+                    <strong>Compliance Notice:</strong> This system uses licensed MLS data and county official sources only. 
+                    Scraping Redfin or Zillow is prohibited per their Terms of Use. 
+                    All AFH conversions must meet WAC 358-76 standards.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-6 py-8">
+        <!-- AFH Ecosystem Resources -->
+        <section id="resources" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">AFH Ecosystem Resources</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Regulations & Licensing -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-gavel text-2xl text-blue-600 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-800">Regulations & Licensing</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://www.dshs.wa.gov/esa/afh" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                DSHS AFH Information
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://apps.leg.wa.gov/wac/default.aspx?cite=388-76" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                WAC 388-76
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://app.leg.wa.gov/rcw/default.aspx?cite=70.128" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                RCW 70.128
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Inspections & Building Code -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-clipboard-check text-2xl text-green-600 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-800">Inspections & Building Code</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                WABO AFH Building Inspection Checklist (2024)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                2021 IRC R330 Compliance
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                DSHS AFH Initial Inspection Preparation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                DSHS AFH Building Inspections Hub
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Industry Advocacy & Locator -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-users text-2xl text-purple-600 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-800">Industry Advocacy & Locator</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://www.afhcouncil.org" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Adult Family Home Council (AFHC)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                AFHC Home Finder Directory
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                DSHS AFH Locator & Overview
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='20' fill='%23666'%3E🏠%3C/text%3E%3C/svg%3E" 
+                             alt="House icon" class="w-8 h-8">
+                    </div>
+                </div>
+
+                <!-- Data Access & Terms of Service -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-database text-2xl text-red-600 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-800">Data Access & Terms of Service</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                NWMLS Data Use Compliance Policy (May 2024)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.redfin.com/about/terms-of-use" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Redfin Terms of Use
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.zillow.com/corp/Terms.htm" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Zillow API Terms
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="text-sm text-gray-600 mt-3">
+                        <strong>Note:</strong> Automated crawling/scraping prohibited
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily MLS Alerts -->
+        <section id="mls-alerts" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Daily MLS Alerts - AFH-Potential Properties</h2>
+            
+            <!-- Compliance Banner -->
+            <div class="compliance-banner text-black py-4 rounded-lg mb-6">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-2xl mr-4"></i>
+                    <p class="font-semibold">
+                        <strong>Legal Compliance Required:</strong> MLS data access requires proper licensing. 
+                        All searches must comply with NWMLS Data Use Policy and local regulations.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Setup Instructions -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-cog text-blue-600 mr-3"></i>
+                        Setup Instructions
+                    </h3>
+                    <ol class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-1">1</span>
+                            <div>
+                                <strong>Obtain MLS GRID License</strong>
+                                <p class="text-gray-600 text-sm">Contact NWMLS for proper data access credentials</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-1">2</span>
+                            <div>
+                                <strong>Configure Daily Searches</strong>
+                                <p class="text-gray-600 text-sm">Set up automated property searches with AFH criteria</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-1">3</span>
+                            <div>
+                                <strong>Apply AI Potential Analysis</strong>
+                                <p class="text-gray-600 text-sm">Use machine learning to identify AFH-suitable properties</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-1">4</span>
+                            <div>
+                                <strong>Cross-Reference County Permits</strong>
+                                <p class="text-gray-600 text-sm">Verify property history and permit status</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-1">5</span>
+                            <div>
+                                <strong>Setup Email/SMS Alerts</strong>
+                                <p class="text-gray-600 text-sm">Configure notifications for new matches</p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- Search Criteria & Sample Alert -->
+                <div class="space-y-6">
+                    <!-- Search Criteria -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-search text-green-600 mr-3"></i>
+                            Search Criteria
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-600 mr-2"></i>
+                                <span class="text-sm">Single-story 'rambler' layout</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-600 mr-2"></i>
+                                <span class="text-sm">At-grade egress</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-600 mr-2"></i>
+                                <span class="text-sm">3+ bedrooms</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-600 mr-2"></i>
+                                <span class="text-sm">2+ bathrooms</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-600 mr-2"></i>
+                                <span class="text-sm">Septic/water readiness</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-600 mr-2"></i>
+                                <span class="text-sm">Ramp feasibility</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-600 mr-2"></i>
+                                <span class="text-sm">51-61 person capacity</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample Alert Output -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-bell text-yellow-600 mr-3"></i>
+                            Sample Alert Output
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">123 Main St, Olympia, WA</h4>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">New Match</span>
+                            </div>
+                            <p class="text-gray-600 mb-2">4 bed 2 bath $550k - Single-story, large lot</p>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 text-sm flex items-center">
+                                <i class="fas fa-external-link-alt mr-1"></i>
+                                View in Parcel Viewer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- County Parcel & Permit Portals -->
+        <section id="counties" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">County Parcel & Permit Portals</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- King County -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-map-marker-alt text-blue-600 mr-3"></i>
+                        King County
+                    </h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://gismaps.kingcounty.gov/parcelviewer2/" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Parcel Viewer
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                AFH Inspection Guide
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.mybuildingpermit.com" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                MyBuildingPermit.com + AFH Inspection
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='20' y='30' width='60' height='40' fill='%23e5e7eb'/%3E%3Crect x='30' y='20' width='40' height='20' fill='%23d1d5db'/%3E%3C/svg%3E" 
+                             alt="Property thumbnail" class="w-16 h-12 rounded">
+                    </div>
+                </div>
+
+                <!-- Pierce County -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-map-marker-alt text-green-600 mr-3"></i>
+                        Pierce County
+                    </h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://www.piercecountywa.gov/parcel" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Parcel & Property Info
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://pals.piercecountywa.gov" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                PALS Online
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                PublicGIS permit layers
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Thurston County -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-map-marker-alt text-purple-600 mr-3"></i>
+                        Thurston County
+                    </h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://www.thurstoncountywa.gov/permits" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Permit Applications
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                WABO AFH Form 5A00F
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Water/Sewer prerequisites
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Lewis County -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-map-marker-alt text-orange-600 mr-3"></i>
+                        Lewis County
+                    </h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://www.lewiscountywa.gov/permits" target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Permit Applications
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Parcel Search
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Tax records & ownership
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Getting Started - Provider Checklist -->
+        <section id="getting-started" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Getting Started - Provider Checklist</h2>
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Training Requirements -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-graduation-cap text-blue-600 mr-3"></i>
+                        Training Requirements
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Home Care Aide Certification</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>75-hour orientation</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>CPR/First Aid</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Food Safety</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>1,000 hours caregiving experience</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Insurance Requirements -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-shield-alt text-green-600 mr-3"></i>
+                        Insurance Requirements
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Commercial general liability</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Professional liability</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Minimum aggregate insurance amounts</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Inspection Preparation -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-clipboard-check text-purple-600 mr-3"></i>
+                        Inspection Preparation
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>WABO building inspection</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Door clear width</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Smoke/CO alarms</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Evacuation capability</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Escape windows</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-600 mr-3"></i>
+                            <span>Water heater temperature</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pro Tip -->
+            <div class="pro-tip text-white rounded-lg p-6 mt-8">
+                <div class="flex items-center">
+                    <i class="fas fa-lightbulb text-2xl mr-4"></i>
+                    <div>
+                        <h4 class="text-xl font-bold mb-2">Pro Tip</h4>
+                        <p class="text-green-100">
+                            Document septic/water capacity early in the process. This often determines 
+                            the maximum number of residents you can serve and affects your business model.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legal & Compliance Notice -->
+        <section id="legal" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Legal & Compliance Notice</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Civil Penalties -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-gavel text-red-600 mr-3"></i>
+                        Civil Penalties (RCW 70.128.160)
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• First violation: $100-$500 per day</li>
+                        <li>• Second violation: $200-$1,000 per day</li>
+                        <li>• Third violation: $500-$2,500 per day</li>
+                        <li>• Pattern of violations: Up to $5,000 per day</li>
+                    </ul>
+                </div>
+
+                <!-- Capacity & Evacuation Rules -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-users text-blue-600 mr-3"></i>
+                        Capacity & Evacuation Rules
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Default capacity: 7-8 beds</li>
+                        <li>• 5-minute evacuation standards</li>
+                        <li>• Assisted residents: Additional requirements</li>
+                        <li>• Ramps: Must meet accessibility standards</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6">
+                <p class="text-gray-700">
+                    <strong>Disclaimer:</strong> This dashboard provides guidance, not legal advice. 
+                    Consult with qualified professionals for specific compliance requirements.
+                </p>
+            </div>
+        </section>
+
+        <!-- Internal Team Contact -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Internal Team Contact</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <i class="fas fa-database text-3xl text-blue-600 mb-4"></i>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">MLS Data Team</h3>
+                    <p class="text-gray-600">Data access and compliance</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <i class="fas fa-shield-alt text-3xl text-green-600 mb-4"></i>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Compliance Team</h3>
+                    <p class="text-gray-600">Regulatory guidance and support</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <i class="fas fa-handshake text-3xl text-purple-600 mb-4"></i>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">County Relations</h3>
+                    <p class="text-gray-600">Local government coordination</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <p class="text-gray-300 mb-4">
+                    <strong>Private Preview Access Only</strong> - This dashboard contains licensed data access patterns 
+                    and compliance protocols for internal use.
+                </p>
+                <div class="border-t border-gray-700 pt-4">
+                    <p class="text-sm text-gray-400">
+                        Washington AFH Property Match Dashboard - Private Preview - Compliant Property Matching & Resource Guide
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏠 Washington AFH Property Match Dashboard Loaded');
+            console.log('📊 Dashboard features:');
+            console.log('  - AFH Ecosystem Resources');
+            console.log('  - Daily MLS Alerts');
+            console.log('  - County Parcel & Permit Portals');
+            console.log('  - Provider Checklist');
+            console.log('  - Legal & Compliance Information');
+        });
+    </script>
+</body>
+</html>
