@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFH Property Scout - Dashboard Hub</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e40af 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .dashboard-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+        .dashboard-card p {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .floating-element {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.05;
+            animation: float 15s ease-in-out infinite;
+        }
+        .floating-element:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .floating-element:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .floating-element:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 6s; }
+        .floating-element:nth-child(5) { top: 50%; left: 5%; animation-delay: 8s; }
+        .floating-element:nth-child(6) { top: 60%; right: 5%; animation-delay: 10s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element">🏠</div>
+        <div class="floating-element">🏥</div>
+        <div class="floating-element">💚</div>
+        <div class="floating-element">👴</div>
+        <div class="floating-element">💊</div>
+        <div class="floating-element">📊</div>
+    </div>
+
+    <div class="container">
+        <h1>🏠 AFH Property Scout</h1>
+        <p class="subtitle">Dashboard Hub - Choose Your Interface</p>
+        
+        <div class="dashboard-grid">
+            <!-- Main AFH Property Scout Dashboard -->
+            <div class="dashboard-card">
+                <span class="icon">🎯</span>
+                <h2>Main AFH Property Scout</h2>
+                <p>Interactive dashboard with property analysis, automation monitoring, and AFH resources integration.</p>
+                <a href="web/index.html" class="btn">Open Main Dashboard</a>
+            </div>
+
+            <!-- Master AFH Analyzer Hub -->
+            <div class="dashboard-card">
+                <span class="icon">📊</span>
+                <h2>Master AFH Analyzer Hub</h2>
+                <p>Complete collection of AFH property analysis series and investment dashboards.</p>
+                <a href="web/MASTER_AFH_ANALYZER_HUB.html" class="btn">Open Analyzer Hub</a>
+            </div>
+
+            <!-- Washington AFH Property Match Dashboard -->
+            <div class="dashboard-card">
+                <span class="icon">🏛️</span>
+                <h2>Washington AFH Property Match</h2>
+                <p>Comprehensive dashboard with compliance resources, county portals, and provider checklists.</p>
+                <a href="web/washington-afh-dashboard.html" class="btn">Open Washington Dashboard</a>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; opacity: 0.8;">
+            <p>Choose the dashboard that best fits your needs. All dashboards are fully functional and contain comprehensive AFH resources.</p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏠 AFH Property Scout Dashboard Hub Loaded');
+            console.log('📊 Available Dashboards:');
+            console.log('  - Main AFH Property Scout');
+            console.log('  - Master AFH Analyzer Hub');
+            console.log('  - Washington AFH Property Match Dashboard');
+        });
+    </script>
+</body>
+</html>
